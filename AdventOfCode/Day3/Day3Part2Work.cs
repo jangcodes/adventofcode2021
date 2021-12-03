@@ -51,9 +51,8 @@ namespace AdventOfCode.Day3
 
             Console.WriteLine("Result Oxygen: " + filteredListOx.First());
             Console.WriteLine("Result CO2: " + filteredListCo.First());
-            Console.WriteLine("Final Answer: " + (GetDoubleFromStringBinary(filteredListOx.First()) * GetDoubleFromStringBinary(filteredListCo.First())));
+            Console.WriteLine("Final Answer: " + (Convert.ToInt32(filteredListOx.First(), 2) * Convert.ToInt32(filteredListCo.First(), 2)));
         }
-
 
         private static List<string> FilterList(List<string> unfilteredList, int position, char ch)
         {
@@ -80,22 +79,6 @@ namespace AdventOfCode.Day3
             }
 
             return count;
-        }
-
-        private static double GetDoubleFromStringBinary(string bin)
-        {
-            double result = 0;
-
-            for (int i = 0; i < 12; i++)
-            {
-                int powNumber = 11 - i;
-                if (bin[i] == '1')
-                {
-                    result += Math.Pow(2, powNumber);
-                }
-            }
-
-            return result;
         }
     }
 }
