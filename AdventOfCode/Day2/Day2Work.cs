@@ -18,15 +18,15 @@
             {
                 if (line.Contains("down"))
                 {
-                    aim += Convert.ToInt32(line.Replace("down ", ""));
+                    aim += ExtractIntFromInput(line, "down ");
                 }
                 else if (line.Contains("up"))
                 {
-                    aim -= Convert.ToInt32(line.Replace("up ", ""));
+                    aim -= ExtractIntFromInput(line, "up ");
                 }
                 else if (line.Contains("forward"))
                 {
-                    var forwardAmount = Convert.ToInt32(line.Replace("forward ", ""));
+                    var forwardAmount = ExtractIntFromInput(line, "forward ");
                     horizontalPosition += forwardAmount;
                     depth += (aim * forwardAmount);
                 }
@@ -35,6 +35,11 @@
             Console.WriteLine("Forward Sum: " + horizontalPosition);
             Console.WriteLine("Depth Sum: " + depth);
             Console.WriteLine("Day 2 Answer: " + (depth * horizontalPosition));
+        }
+
+        private static int ExtractIntFromInput(string input, string keyWord)
+        {
+            return Convert.ToInt32(input.Replace(keyWord, ""));
         }
     }
 }
