@@ -49,10 +49,10 @@ namespace AdventOfCode.Day3
             Console.WriteLine();
 
             double gammaRate = 0;
-            List<int> gammaRateBinary = new List<int>();
+            List<int> gammaRateBinary = new();
 
             double epsilonRate = 0;
-            List<int> epsilonRateBinary = new List<int>();
+            List<int> epsilonRateBinary = new();
 
             for (int i = 0; i < 12; i++)
             {
@@ -80,42 +80,6 @@ namespace AdventOfCode.Day3
             Console.WriteLine("Epsilon Rate: " + string.Join("", epsilonRateBinary));
 
             Console.WriteLine("Result: " + (gammaRate * epsilonRate));
-
-
-            List<string> oxygenGenRat = input.ToList();
-            List<string> co2GenRat = input.ToList();
-
-            for (int i = 0; i < 12; i++)
-            {
-                if (oxygenGenRat.Count > 1)
-                {
-                    oxygenGenRat = oxygenGenRat.Where(x => Convert.ToInt32(x[i].ToString()) == gammaRateBinary[i]).ToList();
-                }
-
-                if (co2GenRat.Count > 1)
-                {
-                    co2GenRat = co2GenRat.Where(x => Convert.ToInt32(x[i].ToString()) == epsilonRateBinary[i]).ToList();
-                }
-            }
-
-            Console.WriteLine("Oxygen: " + oxygenGenRat.First() + " " + GetDoubleFromStringBinary(oxygenGenRat.First()));
-            Console.WriteLine("CO2: " + co2GenRat.First() + " " + GetDoubleFromStringBinary(co2GenRat.First()));
-        }
-
-        private static double GetDoubleFromStringBinary(string bin)
-        {
-            double result = 0;
-
-            for (int i = 0; i < 12; i++)
-            {
-                int powNumber = 11 - i;
-                if (bin[i] == '1')
-                {
-                    result += Math.Pow(2, powNumber);
-                }
-            }
-
-            return result;
         }
     }
 }

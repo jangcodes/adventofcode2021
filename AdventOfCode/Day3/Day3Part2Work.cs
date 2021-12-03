@@ -21,7 +21,6 @@ namespace AdventOfCode.Day3
             List<string> filteredListCo = input.ToList();
 
             int charPosition = 0;
-
             while (charPosition < 12)
             {
                 int oneCount = CountChar(filteredListOx, charPosition, '1');
