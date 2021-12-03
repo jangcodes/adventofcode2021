@@ -17,6 +17,9 @@ namespace AdventOfCode.Day3
             Console.WriteLine();
 
             await Day3Part1Work.Execute();
+            Console.WriteLine();
+
+            await Day3Part2Work.Execute();
             Console.ReadKey();
         }
     }
