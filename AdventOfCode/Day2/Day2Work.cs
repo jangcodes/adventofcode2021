@@ -4,7 +4,7 @@
     {
         public static async Task<int> Execute()
         {
-            string[]? textLineDay2 = await System.IO.File.ReadAllLinesAsync(@"Day2\Input.txt");
+            string[]? textLineDay2 = await File.ReadAllLinesAsync(@"Day2\Input.txt");
 
             int horizontalPosition = 0;
             int depth = 0;
@@ -14,17 +14,17 @@
             {
                 if (line.Contains("down"))
                 {
-                    aim = aim + Convert.ToInt32(line.Replace("down ", ""));
+                    aim += Convert.ToInt32(line.Replace("down ", ""));
                 }
                 else if (line.Contains("up"))
                 {
-                    aim = aim - Convert.ToInt32(line.Replace("up ", ""));
+                    aim -= Convert.ToInt32(line.Replace("up ", ""));
                 }
                 else if (line.Contains("forward"))
                 {
                     var forwardAmount = Convert.ToInt32(line.Replace("forward ", ""));
-                    horizontalPosition = horizontalPosition + forwardAmount;
-                    depth = depth + (aim * forwardAmount);
+                    horizontalPosition += forwardAmount;
+                    depth += (aim * forwardAmount);
                 }
             }
 

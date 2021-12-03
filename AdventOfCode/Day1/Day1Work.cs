@@ -4,7 +4,7 @@
     {
         public static async Task<int> Execute()
         {
-            string[]? textLineDay1 = await System.IO.File.ReadAllLinesAsync(@"Day1\Input.txt");
+            string[]? textLineDay1 = await File.ReadAllLinesAsync(@"Day1\Input.txt");
             int[]? numberLines = textLineDay1.Select(textLine => Convert.ToInt32(textLine)).ToArray();
 
             int increasedCount = 0;
