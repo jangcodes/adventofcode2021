@@ -24,7 +24,6 @@
                 }
             }
 
-
             Console.WriteLine("Day 1 Answer: " + increasedCount);
         }
     }
