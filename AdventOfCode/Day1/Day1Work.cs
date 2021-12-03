@@ -1,4 +1,9 @@
-﻿namespace AdventOfCode.Day1
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace AdventOfCode.Day1
 {
     internal class Day1Work
     {

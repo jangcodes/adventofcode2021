@@ -1,4 +1,8 @@
-﻿namespace AdventOfCode.Day2
+﻿using System;
+using System.IO;
+using System.Threading.Tasks;
+
+namespace AdventOfCode.Day2
 {
     internal class Day2Work
     {

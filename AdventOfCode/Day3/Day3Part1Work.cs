@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace AdventOfCode.Day3
@@ -11,7 +9,7 @@ namespace AdventOfCode.Day3
         public static async Task Execute()
         {
             Console.WriteLine("================================");
-            Console.WriteLine("=============Day 2==============");
+            Console.WriteLine("=============Day 3==============");
             Console.WriteLine("================================");
 
             string[]? input = await File.ReadAllLinesAsync(@"Day3\Input.txt");
