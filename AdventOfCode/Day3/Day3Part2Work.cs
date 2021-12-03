@@ -64,11 +64,13 @@ namespace AdventOfCode.Day3
                     break;
                 }
 
+            }
 
             Console.WriteLine("Result Oxygen: " + filteredListOx.First());
             Console.WriteLine("Result CO2: " + filteredListCo.First());
             Console.WriteLine("Final Answer: " + (GetDoubleFromStringBinary(filteredListOx.First()) * GetDoubleFromStringBinary(filteredListCo.First())));
         }
+
 
         private static int CountChar(List<string> input, int position, char ch)
         {
