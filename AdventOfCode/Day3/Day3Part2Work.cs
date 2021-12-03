@@ -19,51 +19,34 @@ namespace AdventOfCode.Day3
             List<string> filteredListOx = input.ToList();
             List<string> filteredListCo = input.ToList();
 
-            int charPosition = 0;
-            while (charPosition < 12)
+            for (int i = 0; i < 12; i++)
             {
-                int oneCount = CountChar(filteredListOx, charPosition, '1');
-                int zeroCount = CountChar(filteredListOx, charPosition, '0');
+                int oneCount = CountChar(filteredListOx, i, '1');
+                int zeroCount = CountChar(filteredListOx, i, '0');
 
                 if (oneCount >= zeroCount)
                 {
-                    filteredListOx = filteredListOx.Where(x => x[charPosition] == '1').ToList();
+                    filteredListOx = FilterList(filteredListOx, i, '1');
                 }
                 else if (oneCount < zeroCount)
                 {
-                    filteredListOx = filteredListOx.Where(x => x[charPosition] == '0').ToList();
-                }
-
-                charPosition++;
-
-                if (filteredListOx.Count == 1)
-                {
-                    break;
+                    filteredListOx = FilterList(filteredListOx, i, '0');
                 }
             }
 
-            charPosition = 0;
-            while (charPosition < 12)
+            for (int i = 0; i < 12; i++)
             {
-                int oneCount = CountChar(filteredListCo, charPosition, '1');
-                int zeroCount = CountChar(filteredListCo, charPosition, '0');
+                int oneCount = CountChar(filteredListCo, i, '1');
+                int zeroCount = CountChar(filteredListCo, i, '0');
 
                 if (oneCount >= zeroCount)
                 {
-                    filteredListCo = filteredListCo.Where(x => x[charPosition] == '0').ToList();
+                    filteredListCo = FilterList(filteredListCo, i, '0');
                 }
                 else if (oneCount < zeroCount)
                 {
-                    filteredListCo = filteredListCo.Where(x => x[charPosition] == '1').ToList();
+                    filteredListCo = FilterList(filteredListCo, i, '1');
                 }
-
-                charPosition++;
-
-                if (filteredListCo.Count == 1)
-                {
-                    break;
-                }
-
             }
 
             Console.WriteLine("Result Oxygen: " + filteredListOx.First());
@@ -71,6 +54,18 @@ namespace AdventOfCode.Day3
             Console.WriteLine("Final Answer: " + (GetDoubleFromStringBinary(filteredListOx.First()) * GetDoubleFromStringBinary(filteredListCo.First())));
         }
 
+
+        private static List<string> FilterList(List<string> unfilteredList, int position, char ch)
+        {
+            List<string> result = unfilteredList;
+
+            if (unfilteredList.Count > 1)
+            {
+                result = unfilteredList.Where(x => x[position] == ch).ToList();
+            }
+
+            return result;
+        }
 
         private static int CountChar(List<string> input, int position, char ch)
         {
