@@ -4,7 +4,7 @@ using AdventOfCode.Day3;
 using System;
 using System.Threading.Tasks;
 
-namespace AdventOfCode.Day3
+namespace AdventOfCode
 {
     public class Program
     {
