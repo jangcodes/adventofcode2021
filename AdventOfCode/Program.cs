@@ -1,4 +1,4 @@
-﻿string[]? textLine = await System.IO.File.ReadAllLinesAsync(@"PuzzleInput.txt");
+﻿string[]? textLine = await System.IO.File.ReadAllLinesAsync(@"Day1Input.txt");
 int[]? numberLines = textLine.Select(textLine => Convert.ToInt32(textLine)).ToArray();
 
 int increasedCount = 0;
