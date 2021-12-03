@@ -111,7 +111,7 @@ namespace AdventOfCode.Day3
                 int powNumber = 11 - i;
                 if (bin[i] == '1')
                 {
-                    result = result + Math.Pow(2, powNumber);
+                    result += Math.Pow(2, powNumber);
                 }
             }
 
