@@ -10,9 +10,9 @@ namespace AdventOfCode.Day3
     {
         public static async Task Execute()
         {
-            Console.WriteLine("================================");
-            Console.WriteLine("=============Day 3 Part 1=======");
-            Console.WriteLine("================================");
+            Console.WriteLine("======================================");
+            Console.WriteLine("=============Day 3 Part 1=============");
+            Console.WriteLine("======================================");
 
             string[]? input = await File.ReadAllLinesAsync(@"Day3\Input.txt");
 
@@ -33,20 +33,6 @@ namespace AdventOfCode.Day3
                     }
                 }
             }
-
-            Console.Write("Zero Counts: ");
-            foreach (var i in countOfZero)
-            {
-                Console.Write(i + " ");
-            }
-            Console.WriteLine();
-
-            Console.Write("One Counts: ");
-            foreach (var i in countOfOne)
-            {
-                Console.Write(i + " ");
-            }
-            Console.WriteLine();
 
             double gammaRate = 0;
             List<int> gammaRateBinary = new();

@@ -10,9 +10,9 @@ namespace AdventOfCode.Day3
     {
         public static async Task Execute()
         {
-            Console.WriteLine("================================");
-            Console.WriteLine("=============Day 3 Part 2=======");
-            Console.WriteLine("================================");
+            Console.WriteLine("======================================");
+            Console.WriteLine("=============Day 3 Part 2=============");
+            Console.WriteLine("======================================");
 
             string[]? input = await File.ReadAllLinesAsync(@"Day3\Input.txt");
 
@@ -63,11 +63,10 @@ namespace AdventOfCode.Day3
                 {
                     break;
                 }
-            }
 
 
-            Console.WriteLine("Result Oxygen: " + filteredListOx.First() + " " + GetDoubleFromStringBinary(filteredListOx.First()));
-            Console.WriteLine("Result CO2: " + filteredListCo.First() + " " + GetDoubleFromStringBinary(filteredListCo.First()));
+            Console.WriteLine("Result Oxygen: " + filteredListOx.First());
+            Console.WriteLine("Result CO2: " + filteredListCo.First());
             Console.WriteLine("Final Answer: " + (GetDoubleFromStringBinary(filteredListOx.First()) * GetDoubleFromStringBinary(filteredListCo.First())));
         }
 
