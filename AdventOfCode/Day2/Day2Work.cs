@@ -2,8 +2,12 @@
 {
     internal class Day2Work
     {
-        public static async Task<int> Execute()
+        public static async Task Execute()
         {
+            Console.WriteLine("================================");
+            Console.WriteLine("=============Day 2==============");
+            Console.WriteLine("================================");
+
             string[]? textLineDay2 = await File.ReadAllLinesAsync(@"Day2\Input.txt");
 
             int horizontalPosition = 0;
@@ -30,8 +34,7 @@
 
             Console.WriteLine("Forward Sum: " + horizontalPosition);
             Console.WriteLine("Depth Sum: " + depth);
-
-            return depth * horizontalPosition;
+            Console.WriteLine("Day 2 Answer: " + (depth * horizontalPosition));
         }
     }
 }

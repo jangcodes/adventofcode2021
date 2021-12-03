@@ -2,8 +2,12 @@
 {
     internal class Day1Work
     {
-        public static async Task<int> Execute()
+        public static async Task Execute()
         {
+            Console.WriteLine("================================");
+            Console.WriteLine("=============Day 1==============");
+            Console.WriteLine("================================");
+
             string[]? textLineDay1 = await File.ReadAllLinesAsync(@"Day1\Input.txt");
             int[]? numberLines = textLineDay1.Select(textLine => Convert.ToInt32(textLine)).ToArray();
 
@@ -20,7 +24,8 @@
                 }
             }
 
-            return increasedCount;
+
+            Console.WriteLine("Day 1 Answer: " + increasedCount);
         }
     }
 }
