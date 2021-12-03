@@ -78,7 +78,6 @@ namespace AdventOfCode.Day3
 
             Console.WriteLine("Gamma Rate: " + string.Join("", gammaRateBinary));
             Console.WriteLine("Epsilon Rate: " + string.Join("", epsilonRateBinary));
-
             Console.WriteLine("Result: " + (gammaRate * epsilonRate));
         }
     }
