@@ -27,20 +27,23 @@ string[]? textLineDay2 = await System.IO.File.ReadAllLinesAsync(@"Day2Input.txt"
 
 int horizontalPosition = 0;
 int depth = 0;
+int aim = 0;
 
 foreach (string line in textLineDay2)
 {
     if (line.Contains("down"))
     {
-        depth = depth + Convert.ToInt32(line.Replace("down ", ""));
+        aim = aim + Convert.ToInt32(line.Replace("down ", ""));
     }
     else if (line.Contains("up"))
     {
-        depth = depth - Convert.ToInt32(line.Replace("up ", ""));
+        aim = aim - Convert.ToInt32(line.Replace("up ", ""));
     }
     else if (line.Contains("forward"))
     {
-        horizontalPosition = horizontalPosition + Convert.ToInt32(line.Replace("forward ", ""));
+        var forwardAmount = Convert.ToInt32(line.Replace("forward ", ""));
+        horizontalPosition = horizontalPosition + forwardAmount;
+        depth = depth + (aim * forwardAmount);
     }
 }
 
