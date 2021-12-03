@@ -34,38 +34,26 @@ namespace AdventOfCode.Day3
                 }
             }
 
-            double gammaRate = 0;
-            List<int> gammaRateBinary = new();
-
-            double epsilonRate = 0;
-            List<int> epsilonRateBinary = new();
+            string gammaRateBinary = "";
+            string epsilonRateBinary = "";
 
             for (int i = 0; i < 12; i++)
             {
-                int powNumber = 11 - i;
-                if (countOfZero[i] == countOfOne[i])
+                if (countOfZero[i] > countOfOne[i])
                 {
-                    gammaRateBinary.Add(1);
-                    epsilonRateBinary.Add(1);
-                }
-                else if (countOfZero[i] > countOfOne[i])
-                {
-                    epsilonRate = epsilonRate + Math.Pow(2, powNumber);
-                    gammaRateBinary.Add(0);
-                    epsilonRateBinary.Add(1);
+                    gammaRateBinary += "0";
+                    epsilonRateBinary += "1";
                 }
                 else if (countOfZero[i] < countOfOne[i])
                 {
-                    gammaRate = gammaRate + Math.Pow(2, powNumber);
-                    gammaRateBinary.Add(1);
-                    epsilonRateBinary.Add(0);
+                    gammaRateBinary += "1";
+                    epsilonRateBinary += "0";
                 }
             }
 
-
-            Console.WriteLine("Gamma Rate: " + string.Join("", gammaRateBinary));
-            Console.WriteLine("Epsilon Rate: " + string.Join("", epsilonRateBinary));
-            Console.WriteLine("Result: " + (gammaRate * epsilonRate));
+            Console.WriteLine("Gamma Rate: " + gammaRateBinary);
+            Console.WriteLine("Epsilon Rate: " + epsilonRateBinary);
+            Console.WriteLine("Result: " + (Convert.ToInt32(gammaRateBinary, 2) * Convert.ToInt32(epsilonRateBinary, 2)));
         }
     }
 }
