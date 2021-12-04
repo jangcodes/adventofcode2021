@@ -8,9 +8,7 @@ namespace AdventOfCode.Day3
     {
         public static async Task Execute()
         {
-            Console.WriteLine("======================================");
             Console.WriteLine("=============Day 3 Part 1=============");
-            Console.WriteLine("======================================");
 
             string[]? input = await File.ReadAllLinesAsync(@"Day3\Input.txt");
 

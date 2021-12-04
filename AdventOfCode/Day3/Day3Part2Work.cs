@@ -10,19 +10,16 @@ namespace AdventOfCode.Day3
     {
         public static async Task Execute()
         {
-            Console.WriteLine("======================================");
             Console.WriteLine("=============Day 3 Part 2=============");
-            Console.WriteLine("======================================");
 
             string[]? input = await File.ReadAllLinesAsync(@"Day3\Input.txt");
 
             List<string> filteredListOx = input.ToList();
-            List<string> filteredListCo = input.ToList();
-
+            
             for (int i = 0; i < 12; i++)
             {
-                int oneCount = CountChar(filteredListOx, i, '1');
-                int zeroCount = CountChar(filteredListOx, i, '0');
+                int oneCount = filteredListOx.Count(x => x[i] == '1');
+                int zeroCount = filteredListOx.Count(x => x[i] == '0');
 
                 if (oneCount >= zeroCount)
                 {
@@ -34,10 +31,11 @@ namespace AdventOfCode.Day3
                 }
             }
 
+            List<string> filteredListCo = input.ToList();
             for (int i = 0; i < 12; i++)
             {
-                int oneCount = CountChar(filteredListCo, i, '1');
-                int zeroCount = CountChar(filteredListCo, i, '0');
+                int oneCount = filteredListCo.Count(x => x[i] == '1');
+                int zeroCount = filteredListCo.Count(x => x[i] == '0');
 
                 if (oneCount >= zeroCount)
                 {
@@ -64,21 +62,6 @@ namespace AdventOfCode.Day3
             }
 
             return result;
-        }
-
-        private static int CountChar(List<string> input, int position, char ch)
-        {
-            int count = 0;
-
-            foreach (string line in input)
-            {
-                if (line[position] == ch)
-                {
-                    count++;
-                }
-            }
-
-            return count;
         }
     }
 }
