@@ -15,7 +15,7 @@ namespace AdventOfCode.Day4
             string[] input = await File.ReadAllLinesAsync(@"Day4\Input.txt");
             int[] bingoNumbers = input[0].Split(',').Select(x => Convert.ToInt32(x)).ToArray();
 
-            List<List<BingoNumber>> bingoBoards = new();
+            List<BingoBoard> bingoBoards = new();
             List<BingoNumber> tempBingoBoard = new();
 
             int bingoNumberIndex = 0;
@@ -37,7 +37,7 @@ namespace AdventOfCode.Day4
 
                     if (tempBingoBoard.Count == 25)
                     {
-                        bingoBoards.Add(tempBingoBoard);
+                        bingoBoards.Add(new BingoBoard() { BingoNumbers = tempBingoBoard, BingoFound = false });
                         tempBingoBoard = new();
                         bingoNumberIndex = 0;
                     }
@@ -46,56 +46,84 @@ namespace AdventOfCode.Day4
 
             int firstBingoNumber = 0;
 
-            foreach (var bingoNumber in bingoNumbers)
+            bool lastFound = false;
+
+            foreach (var calledBingoNumber in bingoNumbers)
             {
                 bool bingoFound = false;
 
                 foreach (var bingoBoard in bingoBoards)
                 {
-                    var bingoEntryFound = bingoBoard.FirstOrDefault(x => x.Number == bingoNumber);
+                    var bingoEntryFound = bingoBoard.BingoNumbers.FirstOrDefault(x => x.Number == calledBingoNumber);
                     if (bingoEntryFound != null) bingoEntryFound.Selected = true;
 
-                    bingoFound = FindBingo(bingoBoard);
-                    if (bingoFound && firstBingoNumber == 0)
+                    bingoFound = FindBingo(bingoBoard.BingoNumbers);
+                    if (bingoFound)
                     {
-                        firstBingoNumber = bingoNumber;
-                        int sumOfUnselected = bingoBoard.Where(x => !x.Selected).Select(x => x.Number).ToArray().Sum();
+                        bingoBoard.BingoFound = true;
+                        if (firstBingoNumber == 0)
+                        {
+                            firstBingoNumber = calledBingoNumber;
+                            int sumOfUnselected = bingoBoard.BingoNumbers.Where(x => !x.Selected).Select(x => x.Number).ToArray().Sum();
 
-                        Console.WriteLine("Final Bingo Number: " + firstBingoNumber);
-                        Console.WriteLine("Sum of Unselected: " + sumOfUnselected);
-                        Console.WriteLine("Day 4 Part 1 Answer: " + (firstBingoNumber * sumOfUnselected));
-                        Console.WriteLine();
+                            PrintSingleBingoBoard(bingoBoard);
+
+                            Console.WriteLine("Bingo Number: " + firstBingoNumber);
+                            Console.WriteLine("Sum of Unselected: " + sumOfUnselected);
+                            Console.WriteLine("Day 4 Part 1 Answer: " + (firstBingoNumber * sumOfUnselected));
+                            Console.WriteLine();
+                        }
+
+
+                        if (bingoBoards.All(x => x.BingoFound) && !lastFound)
+                        {
+                            lastFound = true;
+
+                            int sumOfUnselected = bingoBoard.BingoNumbers.Where(x => !x.Selected).Select(x => x.Number).ToArray().Sum();
+
+
+                            Console.WriteLine("=============Day 4 Part 2=============");
+
+                            PrintSingleBingoBoard(bingoBoard);
+
+                            Console.WriteLine("Bingo Number: " + calledBingoNumber);
+                            Console.WriteLine("Sum of Unselected: " + sumOfUnselected);
+                            Console.WriteLine("Day 4 Part 2 Answer: " + (calledBingoNumber * sumOfUnselected));
+                            Console.WriteLine();
+                        }
                     }
                 }
-            }
-        
-
-            Console.WriteLine("=============Day 4 Part 2=============");
-            // PrintBingoBoards(bingoBoards);
+            }           
         }
 
-        private static void PrintBingoBoards(List<List<BingoNumber>> bingoBoards)
+        private static void PrintBingoBoards(List<BingoBoard> bingoBoards)
         {
             foreach (var bingoBoard in bingoBoards)
             {
-                int columnCounter = 0;
-                foreach (var number in bingoBoard)
-                {
-                    if (number.Number < 10) Console.Write(" ");
-
-                    if (number.Selected) Console.ForegroundColor = ConsoleColor.Red;
-
-                    Console.Write(number.Number + " ");
-                    Console.ResetColor();
-                    columnCounter++;
-
-                    if (columnCounter == 5)
-                    {
-                        Console.WriteLine();
-                        columnCounter = 0;
-                    }
-                }
+                PrintSingleBingoBoard(bingoBoard);
                 Console.WriteLine();
+            }
+        }
+
+        private static void PrintSingleBingoBoard(BingoBoard bingoBoard)
+        {
+            int columnCounter = 0;
+
+            foreach (var number in bingoBoard.BingoNumbers)
+            {
+                if (number.Number < 10) Console.Write(" ");
+
+                if (number.Selected) Console.ForegroundColor = ConsoleColor.Red;
+
+                Console.Write(number.Number + " ");
+                Console.ResetColor();
+                columnCounter++;
+
+                if (columnCounter == 5)
+                {
+                    Console.WriteLine();
+                    columnCounter = 0;
+                }
             }
         }
 
