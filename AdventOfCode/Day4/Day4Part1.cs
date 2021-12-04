@@ -45,6 +45,7 @@ namespace AdventOfCode.Day4
             }
 
             int sumOfUnselected = 0;
+            int firstBingoNumber = 0;
 
             foreach (var bingoNumber in bingoNumbers)
             {
@@ -56,21 +57,18 @@ namespace AdventOfCode.Day4
                     if (bingoEntryFound != null) bingoEntryFound.Selected = true;
 
                     bingoFound = FindBingo(bingoBoard);
-                    if (bingoFound)
+                    if (bingoFound && firstBingoNumber == 0)
                     {
-                        Console.WriteLine("Final Bingo Number: " + bingoNumber);                        
+                        firstBingoNumber = bingoNumber;
                         sumOfUnselected = bingoBoard.Where(x => !x.Selected).Select(x => x.Number).ToArray().Sum();
-                        Console.WriteLine("Sum of Unselected: " + sumOfUnselected);
-
-                        Console.WriteLine("Day 4 Part 1 Answer: " + (bingoNumber * sumOfUnselected));
-
-                        Console.WriteLine();
-                        break;
                     }
                 }
-
-                if (bingoFound) break;
             }
+
+            Console.WriteLine("Final Bingo Number: " + firstBingoNumber);
+            Console.WriteLine("Sum of Unselected: " + sumOfUnselected);
+            Console.WriteLine("Day 4 Part 1 Answer: " + (firstBingoNumber * sumOfUnselected));
+            Console.WriteLine();
 
             // PrintBingoBoards(bingoBoards);
         }
