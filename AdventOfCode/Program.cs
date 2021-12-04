@@ -23,7 +23,7 @@ namespace AdventOfCode
             //await Day3Part2Work.Execute();
             //Console.WriteLine();
 
-            await Day4Part1.Execute();
+            await Day4.Day4Work.Execute();
             Console.ReadKey();
 
         }

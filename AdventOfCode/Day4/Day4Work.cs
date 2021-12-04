@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AdventOfCode.Day4
 {
-    internal class Day4Part1
+    internal class Day4Work
     {
         public static async Task Execute()
         {
@@ -44,7 +44,6 @@ namespace AdventOfCode.Day4
                 }
             }
 
-            int sumOfUnselected = 0;
             int firstBingoNumber = 0;
 
             foreach (var bingoNumber in bingoNumbers)
@@ -60,16 +59,18 @@ namespace AdventOfCode.Day4
                     if (bingoFound && firstBingoNumber == 0)
                     {
                         firstBingoNumber = bingoNumber;
-                        sumOfUnselected = bingoBoard.Where(x => !x.Selected).Select(x => x.Number).ToArray().Sum();
+                        int sumOfUnselected = bingoBoard.Where(x => !x.Selected).Select(x => x.Number).ToArray().Sum();
+
+                        Console.WriteLine("Final Bingo Number: " + firstBingoNumber);
+                        Console.WriteLine("Sum of Unselected: " + sumOfUnselected);
+                        Console.WriteLine("Day 4 Part 1 Answer: " + (firstBingoNumber * sumOfUnselected));
+                        Console.WriteLine();
                     }
                 }
             }
+        
 
-            Console.WriteLine("Final Bingo Number: " + firstBingoNumber);
-            Console.WriteLine("Sum of Unselected: " + sumOfUnselected);
-            Console.WriteLine("Day 4 Part 1 Answer: " + (firstBingoNumber * sumOfUnselected));
-            Console.WriteLine();
-
+            Console.WriteLine("=============Day 4 Part 2=============");
             // PrintBingoBoards(bingoBoards);
         }
 
