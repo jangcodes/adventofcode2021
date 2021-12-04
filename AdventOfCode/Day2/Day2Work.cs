@@ -12,13 +12,13 @@ namespace AdventOfCode.Day2
             Console.WriteLine("=============Day 2==============");
             Console.WriteLine("================================");
 
-            string[]? textLineDay2 = await File.ReadAllLinesAsync(@"Day2\Input.txt");
+            string[]? input = await File.ReadAllLinesAsync(@"Day2\Input.txt");
 
             int horizontalPosition = 0;
             int depth = 0;
             int aim = 0;
 
-            foreach (string line in textLineDay2)
+            foreach (string line in input)
             {
                 if (line.Contains("down"))
                 {
