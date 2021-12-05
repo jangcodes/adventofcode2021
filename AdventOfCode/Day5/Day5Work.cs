@@ -8,7 +8,6 @@ namespace AdventOfCode.Day5
     internal class Day5Work
     {
         public static async Task Execute()
-
         {
             string[] input = await File.ReadAllLinesAsync(@"Day5\Input.txt");
             int[,] grid = new int[1000, 1000];
