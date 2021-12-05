@@ -5,13 +5,12 @@ using System.Threading.Tasks;
 
 namespace AdventOfCode.Day5
 {
-    internal class Day5Part1
+    internal class Day5Work
     {
         public static async Task Execute()
 
         {
             string[] input = await File.ReadAllLinesAsync(@"Day5\Input.txt");
-
             int[,] grid = new int[1000, 1000];
 
             foreach (var row in input)
@@ -28,44 +27,46 @@ namespace AdventOfCode.Day5
 
                 if (firstXValue == secondXValue)
                 {
-                    int biggerValue = 0;
-                    int smallerValue = 0;
-
-                    if (firstYValue > secondYValue)
-                    {
-                        biggerValue = firstYValue;
-                        smallerValue = secondYValue;
-                    }
-                    else
-                    {
-                        biggerValue = secondYValue;
-                        smallerValue = firstYValue;
-                    }
-
-                    for (int i = smallerValue; i <= biggerValue; i++)
+                    (int start, int end) = (firstYValue > secondYValue) ? (secondYValue, firstYValue) : (firstYValue, secondYValue);
+                    for (int i = start; i <= end; i++)
                     {
                         grid[firstXValue, i]++;
                     }
                 }
                 else if (firstYValue == secondYValue)
                 {
-                    int biggerValue = 0;
-                    int smallerValue = 0;
-
-                    if (firstXValue > secondXValue)
+                    (int start, int end) = (firstXValue > secondXValue) ? (secondXValue, firstXValue) : (firstXValue, secondXValue);
+                    for (int i = start; i <= end; i++)
                     {
-                        biggerValue = firstXValue;
-                        smallerValue = secondXValue;
+                        grid[i, firstYValue]++;
                     }
-                    else
+                }
+                else
+                {
+                    // Day 5 Part 2
+                    (int x, int y) startingPoint = (firstXValue, firstYValue);
+                    (int x, int y) endPoint = (secondXValue, secondYValue);
+                    if (secondXValue < firstXValue)
                     {
-                        biggerValue = secondXValue;
-                        smallerValue = firstXValue;
+                        startingPoint = (secondXValue, secondYValue);
+                        endPoint = (firstXValue, firstYValue);
                     }
 
-                    for (int i = smallerValue; i <= biggerValue; i++)
+                    bool goingUp = startingPoint.y > endPoint.y;
+                    int yCounter = startingPoint.y;
+
+                    for (int i = startingPoint.x; i <= endPoint.x; i++)
                     {
-                        grid[i, firstCoordinate[1]]++;
+                        grid[i, yCounter]++;
+
+                        if (goingUp)
+                        {
+                            yCounter--;
+                        }
+                        else
+                        {
+                            yCounter++;
+                        }
                     }
                 }
             }

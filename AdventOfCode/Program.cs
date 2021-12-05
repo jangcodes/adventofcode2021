@@ -24,7 +24,7 @@ namespace AdventOfCode
             //await Day3Part2Work.Execute();
             //Console.WriteLine();
 
-            await Day5Part1.Execute();
+            await Day5Work.Execute();
 
 
         }
