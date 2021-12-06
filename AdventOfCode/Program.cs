@@ -1,9 +1,4 @@
-﻿using AdventOfCode.Day1;
-using AdventOfCode.Day2;
-using AdventOfCode.Day3;
-using AdventOfCode.Day4;
-using AdventOfCode.Day5;
-using System;
+﻿using AdventOfCode.Day6;
 using System.Threading.Tasks;
 
 namespace AdventOfCode
@@ -12,21 +7,7 @@ namespace AdventOfCode
     {
         public static async Task Main()
         {
-            //await Day1Work.Execute();
-            //Console.WriteLine();
-
-            //await Day2Work.Execute();
-            //Console.WriteLine();
-
-            //await Day3Part1Work.Execute();
-            //Console.WriteLine();
-
-            //await Day3Part2Work.Execute();
-            //Console.WriteLine();
-
-            await Day5Work.Execute();
-
-
+            await Day6Part1.Execute();
         }
     }
 }
