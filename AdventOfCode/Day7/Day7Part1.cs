@@ -21,7 +21,6 @@ namespace AdventOfCode.Day7
         private static void Part1(List<int> crabs)
         {
             var median = crabs[crabs.Count / 2];
-
             int sum = 0;
             foreach (var item in crabs)
                 sum += Math.Abs(item - median);
@@ -37,14 +36,8 @@ namespace AdventOfCode.Day7
             var lowResult = Calculation(crabs, lowBoundary);
             var highResult = Calculation(crabs, highBoundary);
 
-            if (lowResult > highResult)
-            {
-                Console.WriteLine($"Part 2 Answer: {highResult}");
-            }
-            else
-            {
-                Console.WriteLine($"Part 2 Answer: {lowResult}");
-            }
+            var finalResult = (lowResult > highResult) ? highResult : lowResult;
+            Console.WriteLine($"Part 2 Answer: {finalResult}");
         }
 
         private static double Calculation(List<int> crabs, double position)
@@ -55,7 +48,6 @@ namespace AdventOfCode.Day7
                 var difference = Math.Abs(individualCrabPosition - position);
                 sum += ((difference * difference) + difference) / 2;
             }
-
             return sum;
         }
     }
