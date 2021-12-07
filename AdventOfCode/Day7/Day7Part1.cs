@@ -21,10 +21,7 @@ namespace AdventOfCode.Day7
         private static void Part1(List<int> crabs)
         {
             var median = crabs[crabs.Count / 2];
-            int sum = 0;
-            foreach (var item in crabs)
-                sum += Math.Abs(item - median);
-
+            int sum = crabs.Sum(c => Math.Abs(c - median));
             Console.WriteLine($"Part 1 Answer: {sum}");
         }
 
