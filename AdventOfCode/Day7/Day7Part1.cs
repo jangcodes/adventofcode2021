@@ -31,21 +31,32 @@ namespace AdventOfCode.Day7
 
         private static void Part2(List<int> crabs)
         {
-            int maxPosition = crabs.Max();
+            var lowBoundary = Math.Floor(crabs.Average());
+            var highBoundary = Math.Floor(crabs.Average());
 
-            List<int> eachPossibility = new ();
-            for (int currentPosition = 0; currentPosition <= maxPosition; currentPosition++)
+            var lowResult = Calculation(crabs, lowBoundary);
+            var highResult = Calculation(crabs, highBoundary);
+
+            if (lowResult > highResult)
             {
-                int sum = 0;
-                foreach (var individualCrabPosition in crabs)
-                {
-                    var difference = Math.Abs(individualCrabPosition - currentPosition);
-                    sum += ((difference * difference) + difference) / 2;
-                }
-                eachPossibility.Add(sum);
+                Console.WriteLine($"Part 2 Answer: {highResult}");
+            }
+            else
+            {
+                Console.WriteLine($"Part 2 Answer: {lowResult}");
+            }
+        }
+
+        private static double Calculation(List<int> crabs, double position)
+        {
+            double sum = 0;
+            foreach (var individualCrabPosition in crabs)
+            {
+                var difference = Math.Abs(individualCrabPosition - position);
+                sum += ((difference * difference) + difference) / 2;
             }
 
-            Console.WriteLine($"Part 2 Answer: {string.Join(',', eachPossibility.Min())}");
+            return sum;
         }
     }
 }
