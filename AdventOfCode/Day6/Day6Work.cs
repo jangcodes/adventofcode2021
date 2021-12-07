@@ -13,21 +13,37 @@ namespace AdventOfCode.Day6
         {
             string[] input = await File.ReadAllLinesAsync(@"Day6\Input.txt");
 
-            List<byte> allFish = input[0].Split(',').Select(_ => Convert.ToByte(_)).ToList();
+            var allFish = input[0].Split(',').Select(_ => Convert.ToInt32(_));
 
-            decimal oneResult = SimulateSingleFish(1, 256);
-            decimal twoResult = SimulateSingleFish(2, 256);
-            decimal threeResult = SimulateSingleFish(3, 256);
-            decimal fourResult = SimulateSingleFish(4, 256);
-            decimal fiveResult = SimulateSingleFish(5, 256);
+            var firstAnswer = CountFish(allFish, 80);
+            var secondAnswer = CountFish(allFish, 256);
 
-            var finalResult = (allFish.Count(_ => _ == 1) * oneResult) +
-                (allFish.Count(_ => _ == 2) * twoResult) +
-                (allFish.Count(_ => _ == 3) * threeResult) +
-                (allFish.Count(_ => _ == 4) * fourResult) +
-                (allFish.Count(_ => _ == 5) * fiveResult);
+            //decimal oneResult = SimulateSingleFish(1, 256);
+            //decimal twoResult = SimulateSingleFish(2, 256);
+            //decimal threeResult = SimulateSingleFish(3, 256);
+            //decimal fourResult = SimulateSingleFish(4, 256);
+            //decimal fiveResult = SimulateSingleFish(5, 256);
 
-            Console.WriteLine($"Final Answer: {finalResult}");
+            //var finalResult = (allFish.Count(_ => _ == 1) * oneResult) +
+            //    (allFish.Count(_ => _ == 2) * twoResult) +
+            //    (allFish.Count(_ => _ == 3) * threeResult) +
+            //    (allFish.Count(_ => _ == 4) * fourResult) +
+            //    (allFish.Count(_ => _ == 5) * fiveResult);
+
+            Console.WriteLine($"Final Answer: {firstAnswer}");
+            Console.WriteLine($"Final Answer: {secondAnswer}");
+        }
+
+        private static long CountFish(IEnumerable<int> input, int generations)
+        {
+            var fish = new long[9];
+            foreach (var age in input)
+                fish[age]++;
+
+            for (var i = 0; i < generations; ++i)
+                fish[(i + 7) % 9] += fish[i % 9];
+
+            return fish.Sum();
         }
 
         private static decimal SimulateSingleFish(byte startDay, int totalDays)
