@@ -10,80 +10,27 @@ namespace AdventOfCode.Day6
     {
         public static async Task Execute()
         {
-            const int days = 256;
-            const int bucketLimit = 1000000;
+            const int days = 80;
             string[] input = await File.ReadAllLinesAsync(@"Day6\Input.txt");
 
-            // List<int> allFish = input[0].Split(',').Select(_ => Convert.ToInt32(_)).ToList();
-            List<int> allFish = new() { 1 };
-
-            List<List<int>> bucketOfFish = new() { allFish };
+            List<int> allFish = input[0].Split(',').Select(_ => Convert.ToInt32(_)).ToList();
+            int numberOfFish = allFish.Count;
 
             for (int i = 1; i <= days; i++)
             {
-
-                int numberOfBuckets = bucketOfFish.Count;
-
-                for (int k = 0; k < numberOfBuckets; k++)
+                for (int j = 0; j < numberOfFish; j++)
                 {
-                    int numberOfFishInBucket = bucketOfFish[k].Count;
-
-                    List<int> newBucket = new();
-
-                    List<List<int>> bucketsOfBucket = new();
-
-                    for (int j = 0; j < numberOfFishInBucket; j++)
+                    if (allFish[j] == 0)
                     {
-                        if (bucketOfFish[k][j] == 0)
-                        {
-                            if (bucketOfFish[k].Count > bucketLimit)
-                            {
-                                if (newBucket.Count > bucketLimit)
-                                {
-                                    bucketsOfBucket.Add(newBucket);
-                                    newBucket = new();
-                                }
-
-                                newBucket.Add(8);
-                            }
-                            else
-                            {
-                                try
-                                {
-                                    bucketOfFish[k].Add(8); // Add Fish
-                                }
-                                catch (Exception ex)
-                                {
-                                    Console.WriteLine($"Error Count: { bucketOfFish[k].Count}");
-                                    throw;
-                                }
-
-
-                            }
-                            bucketOfFish[k][j] = 7; // Reset Fish
-
-                        }
-                        bucketOfFish[k][j]--;
+                        allFish.Add(8); // Add Fish
+                        allFish[j] = 7; // Reset Fish
                     }
-
-                    if (newBucket.Any())
-                    {
-                        bucketOfFish.Add(newBucket);
-                    }
-
-                    if (bucketsOfBucket.Any())
-                    {
-                        bucketOfFish.AddRange(bucketsOfBucket);
-                    }
+                    allFish[j]--;
                 }
-
-                Console.WriteLine($"Day {i}: {bucketOfFish.Count} buckets");
+                numberOfFish = allFish.Count;                
             }
 
-
-
-
-            Console.WriteLine($"Answer: {bucketOfFish.Select(_ => _.Count).Sum()}");
+            Console.WriteLine($"Answer: {numberOfFish}");
         }
     }
 }
