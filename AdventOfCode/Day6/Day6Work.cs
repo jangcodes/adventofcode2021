@@ -15,11 +15,11 @@ namespace AdventOfCode.Day6
 
             List<byte> allFish = input[0].Split(',').Select(_ => Convert.ToByte(_)).ToList();
 
-            decimal oneResult = SimulateSingleFish(1, 256, 200);
-            decimal twoResult = SimulateSingleFish(2, 256, 200);
-            decimal threeResult = SimulateSingleFish(3, 256, 200);
-            decimal fourResult = SimulateSingleFish(4, 256, 200);
-            decimal fiveResult = SimulateSingleFish(5, 256, 200);
+            decimal oneResult = SimulateSingleFish(1, 256);
+            decimal twoResult = SimulateSingleFish(2, 256);
+            decimal threeResult = SimulateSingleFish(3, 256);
+            decimal fourResult = SimulateSingleFish(4, 256);
+            decimal fiveResult = SimulateSingleFish(5, 256);
 
             var finalResult = (allFish.Count(_ => _ == 1) * oneResult) +
                 (allFish.Count(_ => _ == 2) * twoResult) +
@@ -30,15 +30,13 @@ namespace AdventOfCode.Day6
             Console.WriteLine($"Final Answer: {finalResult}");
         }
 
-        private static decimal SimulateSingleFish(byte startDay, int totalDays, int splitDays)
+        private static decimal SimulateSingleFish(byte startDay, int totalDays)
         {
+            const int splitDays = 200;
+            
             List<byte> allFish = new() { startDay };
-
             int numberOfFish = allFish.Count();
-
             var result = ProcessFish(allFish, splitDays);
-
-            Console.WriteLine($"Answer: {result.Count}");
 
             var splitPieces = Chunk(result, 1000000);
 
