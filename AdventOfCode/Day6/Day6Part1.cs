@@ -20,6 +20,7 @@ namespace AdventOfCode.Day6
             {
                 for (int j = 0; j < numberOfFish; j++)
                 {
+
                     if (allFish[j] == 0)
                     {
                         allFish.Add(8); // Add Fish
@@ -27,6 +28,7 @@ namespace AdventOfCode.Day6
                     }
                     allFish[j]--;
                 }
+
                 numberOfFish = allFish.Count;                
             }
 
