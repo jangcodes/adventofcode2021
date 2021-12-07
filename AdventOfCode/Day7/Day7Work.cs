@@ -18,9 +18,9 @@ namespace AdventOfCode.Day7
             Part2(crabsPositions);
         }
 
-        private static void Part1(List<int> crabs)
+        private static void Part1(IEnumerable<int> crabs)
         {
-            var median = crabs[crabs.Count / 2];
+            var median = crabs.ElementAt(crabs.Count() / 2);
             int sum = crabs.Sum(c => Math.Abs(c - median));
             Console.WriteLine($"Part 1 Answer: {sum}");
         }
