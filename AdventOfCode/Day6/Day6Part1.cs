@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace AdventOfCode.Day6
@@ -14,7 +15,8 @@ namespace AdventOfCode.Day6
             string[] input = await File.ReadAllLinesAsync(@"Day6\Input.txt");
 
             List<int> allFish = input[0].Split(',').Select(_ => Convert.ToInt32(_)).ToList();
-            int numberOfFish = allFish.Count;
+
+            int numberOfFish = allFish.Count();
 
             for (int i = 1; i <= days; i++)
             {
@@ -29,7 +31,9 @@ namespace AdventOfCode.Day6
                     allFish[j]--;
                 }
 
-                numberOfFish = allFish.Count;                
+                numberOfFish = allFish.Count();
+                // string visibleFish = string.Join(',', allFish);
+                //C onsole.WriteLine($"After Day {i}: {visibleFish} ");
             }
 
             Console.WriteLine($"Answer: {numberOfFish}");
