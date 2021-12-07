@@ -7,7 +7,7 @@ namespace AdventOfCode
     {
         public static async Task Main()
         {
-            await Day7Part1.Execute();
+            await Day7Work.Execute();
         }
     }
 }

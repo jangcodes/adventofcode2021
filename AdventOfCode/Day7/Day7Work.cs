@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AdventOfCode.Day7
 {
-    internal class Day7Part1
+    internal class Day7Work
     {
         public static async Task Execute()
         {
@@ -39,13 +39,7 @@ namespace AdventOfCode.Day7
 
         private static double Calculation(List<int> crabs, double position)
         {
-            double sum = 0;
-            foreach (var individualCrabPosition in crabs)
-            {
-                var difference = Math.Abs(individualCrabPosition - position);
-                sum += ((difference * difference) + difference) / 2;
-            }
-            return sum;
+            return crabs.Select(c => Math.Abs(c - position)).Sum(n => ((n * n) + n) / 2);
         }
     }
 }
