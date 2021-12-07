@@ -14,7 +14,7 @@ namespace AdventOfCode.Day6
             const int days = 80;
             string[] input = await File.ReadAllLinesAsync(@"Day6\Input.txt");
 
-            List<int> allFish = input[0].Split(',').Select(_ => Convert.ToInt32(_)).ToList();
+            List<byte> allFish = input[0].Split(',').Select(_ => Convert.ToByte(_)).ToList();
 
             int numberOfFish = allFish.Count();
 
@@ -32,8 +32,6 @@ namespace AdventOfCode.Day6
                 }
 
                 numberOfFish = allFish.Count();
-                // string visibleFish = string.Join(',', allFish);
-                //C onsole.WriteLine($"After Day {i}: {visibleFish} ");
             }
 
             Console.WriteLine($"Answer: {numberOfFish}");
