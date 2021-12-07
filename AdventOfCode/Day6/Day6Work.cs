@@ -46,6 +46,19 @@ namespace AdventOfCode.Day6
             return fish.Sum();
         }
 
+        private static ulong[] MoveNumbers(ulong[] Numbers)
+        {
+            ulong[] newNumbers = new ulong[9];
+            newNumbers[6] = Numbers[0];
+            newNumbers[8] = Numbers[0];
+            for (int i = 0; i < 8; i++)
+            {
+                newNumbers[i] += Numbers[i + 1];
+            }
+            return newNumbers;
+        }
+
+
         private static decimal SimulateSingleFish(byte startDay, int totalDays)
         {
             const int splitDays = 200;
