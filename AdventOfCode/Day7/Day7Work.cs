@@ -25,19 +25,18 @@ namespace AdventOfCode.Day7
             Console.WriteLine($"Part 1 Answer: {sum}");
         }
 
-        private static void Part2(List<int> crabs)
+        private static void Part2(IEnumerable<int> crabs)
         {
-            var lowBoundary = Math.Floor(crabs.Average());
-            var highBoundary = Math.Ceiling(crabs.Average());
+            var avgPosition = crabs.Average();
 
-            var lowResult = Calculation(crabs, lowBoundary);
-            var highResult = Calculation(crabs, highBoundary);
+            var lowResult = Calculation(crabs, Math.Floor(avgPosition));
+            var highResult = Calculation(crabs, Math.Ceiling(avgPosition));
 
-            var finalResult = (lowResult > highResult) ? highResult : lowResult;
+            var finalResult = Math.Min(highResult, lowResult);
             Console.WriteLine($"Part 2 Answer: {finalResult}");
         }
 
-        private static double Calculation(List<int> crabs, double position)
+        private static double Calculation(IEnumerable<int> crabs, double position)
         {
             return crabs.Select(c => Math.Abs(c - position)).Sum(n => ((n * n) + n) / 2);
         }
