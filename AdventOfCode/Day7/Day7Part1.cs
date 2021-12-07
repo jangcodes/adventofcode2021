@@ -31,7 +31,7 @@ namespace AdventOfCode.Day7
         private static void Part2(List<int> crabs)
         {
             var lowBoundary = Math.Floor(crabs.Average());
-            var highBoundary = Math.Floor(crabs.Average());
+            var highBoundary = Math.Ceiling(crabs.Average());
 
             var lowResult = Calculation(crabs, lowBoundary);
             var highResult = Calculation(crabs, highBoundary);
