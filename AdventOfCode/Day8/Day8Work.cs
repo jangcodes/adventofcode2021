@@ -18,7 +18,7 @@ namespace AdventOfCode.Day8
         private static void Part1(string[] input)
         {
             int[] listOfNumbers = new int[] { 2, 3, 4, 7 };
-            int sum = input.Select(line => line[line.IndexOf('|')..].Split(" ")).Sum(x => x.Count(x => listOfNumbers.Contains(x.Length)));
+            int sum = input.Select(line => line[line.IndexOf('|')..].Split(" ")).Sum(x => x.Count(y => listOfNumbers.Contains(y.Length)));
             Console.WriteLine($"Answer: {sum}");
         }
 
