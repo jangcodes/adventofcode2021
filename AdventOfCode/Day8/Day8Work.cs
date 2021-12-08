@@ -28,8 +28,7 @@ namespace AdventOfCode.Day8
 
             foreach (string line in input)
             {
-                var splitInput = line.Split(" | ");
-                var signals = splitInput.Select(si => si.Split(' ').Select(i => string.Concat(i.OrderBy(c => c)))).ToArray();
+                var signals = line.Split(" | ").Select(si => si.Split(' ').Select(i => string.Concat(i.OrderBy(c => c)))).ToArray();
 
                 string[] digits = new string[10];
 
