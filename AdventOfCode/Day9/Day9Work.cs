@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace AdventOfCode.Day9
@@ -20,7 +18,7 @@ namespace AdventOfCode.Day9
         {
             int columnTotal = input[0].Length;
             int rowTotal = input.Length;
-            List<int> lowNumbers = new();
+            int lowNumbersTotal = 0;
             for (int r = 0; r < rowTotal; r++)
             {
                 for (int c = 0; c < columnTotal; c++)
@@ -34,12 +32,12 @@ namespace AdventOfCode.Day9
 
                     if (currentNumber < up && currentNumber < down && currentNumber < left && currentNumber < right)
                     {
-                        lowNumbers.Add(currentNumber + 1);
+                        lowNumbersTotal += (currentNumber + 1);
                     }
                 }
             }
 
-            Console.WriteLine($"Part 1 Answer: {lowNumbers.Sum()}");
+            Console.WriteLine($"Part 1 Answer: {lowNumbersTotal}");
         }
 
         private static void Part2(string[] input)
