@@ -41,19 +41,16 @@ namespace AdventOfCode.Day9
                 for (int x = 0; x < ColTotal; x++)
                 {
                     var (up, down, left, right) = GetSurroundingNumbers(x, y);
-
                     int currentNumber = input[y][x] - '0';
-
                     if (currentNumber < up && currentNumber < down && currentNumber < left && currentNumber < right)
                     {
-                        lowNumbersTotal += (currentNumber + 1);
+                        lowNumbersTotal += currentNumber + 1;
                         lowPoints.Add((x, y));
                     }
                 }
             }
 
             Console.WriteLine($"Part 1 Answer: {lowNumbersTotal}");
-
             return lowPoints;
         }
 
