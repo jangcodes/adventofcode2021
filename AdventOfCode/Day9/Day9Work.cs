@@ -56,17 +56,13 @@ namespace AdventOfCode.Day9
 
         private static void Part2(List<(int x, int y)> lowPoints)
         {
-            List<int> basinPoints = new();
+            var answer = lowPoints
+                .Select(lp => CountBasinRecursive(lp.x, lp.y))
+                .OrderByDescending(i => i)
+                .Take(3)
+                .Aggregate((i, j) => i * j);
 
-            foreach (var (x, y) in lowPoints)
-            {
-                basinPoints.Add(CountBasinRecursive(x, y));
-            }
-
-            basinPoints.Sort();
-            basinPoints.Reverse();
-            
-            Console.WriteLine($"Part 2 Answer: {basinPoints.Take(3).Aggregate((i, j) => i * j)}");
+            Console.WriteLine($"Part 2 Answer: {answer}");
         }
 
         private static int CountBasinRecursive(int x, int y)
@@ -75,29 +71,13 @@ namespace AdventOfCode.Day9
 
             int count = 1;
             var (up, down, left, right) = GetSurroundingNumbers(x, y);
-
             int currentNumber = input[y][x] - '0';
 
-            if (up < 9 && up > currentNumber)
-            {
-                count += CountBasinRecursive(x, y - 1);
-            }
-
-            if (down < 9 && down > currentNumber)
-            {
-                count += CountBasinRecursive(x, y + 1);
-            }
-
-            if (left < 9 && left > currentNumber)
-            {
-                count += CountBasinRecursive(x - 1, y);
-            }
-
-            if (right < 9 && right > currentNumber)
-            {
-                count += CountBasinRecursive(x + 1, y);
-            }
-
+            if (up < 9 && up > currentNumber) count += CountBasinRecursive(x, y - 1);
+            if (down < 9 && down > currentNumber) count += CountBasinRecursive(x, y + 1);
+            if (left < 9 && left > currentNumber) count += CountBasinRecursive(x - 1, y);
+            if (right < 9 && right > currentNumber) count += CountBasinRecursive(x + 1, y);
+            
             usedCoordinates.Add((x, y));
 
             return count;
