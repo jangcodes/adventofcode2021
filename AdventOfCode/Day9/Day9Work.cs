@@ -82,6 +82,5 @@ namespace AdventOfCode.Day9
 
             return count;
         }
-
     }
 }
