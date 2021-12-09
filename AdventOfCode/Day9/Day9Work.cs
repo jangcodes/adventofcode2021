@@ -59,17 +59,17 @@ namespace AdventOfCode.Day9
 
         private static void Part2(List<(int x, int y)> lowPoints)
         {
-            List<int> test = new();
+            List<int> basinPoints = new();
 
             foreach (var (x, y) in lowPoints)
             {
-                test.Add(CountBasinRecursive(x, y));
+                basinPoints.Add(CountBasinRecursive(x, y));
             }
 
-            test.Sort();
-            test.Reverse();
+            basinPoints.Sort();
+            basinPoints.Reverse();
             
-            Console.WriteLine($"Part 2 Answer: {test.Take(3).Aggregate((i, j) => i * j)}");
+            Console.WriteLine($"Part 2 Answer: {basinPoints.Take(3).Aggregate((i, j) => i * j)}");
         }
 
         private static int CountBasinRecursive(int x, int y)
