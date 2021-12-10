@@ -14,7 +14,7 @@ namespace AdventOfCode.Day10
 
         public static async Task Execute()
         {
-            string[] input = await File.ReadAllLinesAsync(@"Day10\Input.txt");
+            string[] input = await File.ReadAllLinesAsync(@"Week2\Day10\Input.txt");
 
             int totalIllegalCharScore = 0;
             List<long> incompleteScoreList = new();
@@ -29,10 +29,7 @@ namespace AdventOfCode.Day10
                 List<char> cleanedUpLine = new();
                 foreach (var c in line)
                 {
-                    if (OpenBrackets.Contains(c))
-                    {
-                        cleanedUpLine.Add(c);
-                    }
+                    if (OpenBrackets.Contains(c)) cleanedUpLine.Add(c);
                     else if (CloseBrackets.Contains(c))
                     {
                         if (CompleteBrackets[cleanedUpLine.Last()] != c)
