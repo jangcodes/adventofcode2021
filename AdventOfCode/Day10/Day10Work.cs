@@ -16,19 +16,32 @@ namespace AdventOfCode.Day10
         {
             string[] input = await File.ReadAllLinesAsync(@"Day10\Input.txt");
 
-            Part1(input);
-            Part2(input);
+            var incompleteList = Part1(input);
+            Part2(incompleteList);
         }
 
-        private static void Part1(string[] input)
+        private static List<string> Part1(string[] input)
         {
+            List<string> incomplete = new();
+
             int sum = 0;
             foreach (var line in input)
             {
-                sum += CheckSyntax(line);
+                int illegalCharScore = CheckSyntax(line);
+
+                if (illegalCharScore == 0)
+                {
+                    incomplete.Add(line);
+                }
+                else
+                {
+                    sum += illegalCharScore;
+                }
             }
 
             Console.WriteLine($"Part 1 Answer: {sum}");
+
+            return incomplete;
         }
 
         private static int CheckSyntax(string line)
@@ -53,17 +66,15 @@ namespace AdventOfCode.Day10
                     {
                         return scoresPerChar[c];
                     }
-
                 }
             }
 
             return 0;
         }
 
-        private static void Part2(string[] input)
+        private static void Part2(List<string> input)
         {
 
         }
-
     }
 }
