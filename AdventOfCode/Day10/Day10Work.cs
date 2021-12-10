@@ -10,6 +10,7 @@ namespace AdventOfCode.Day10
     internal class Day10Work
     {
         private static readonly Dictionary<char, char> CompleteBrackets = new() { { '{', '}' }, { '(', ')' }, { '[', ']' }, { '<', '>' } };
+        private static readonly Dictionary<char, int> scoresPerChar = new() { { ')', 3 }, { ']', 57 }, { '}', 1197 }, { '>', 25137 } };
 
         public static async Task Execute()
         {
@@ -32,8 +33,6 @@ namespace AdventOfCode.Day10
 
         private static int CheckSyntax(string line)
         {
-            Dictionary<char, int> scoresPerChar = new() { { ')', 3 }, { ']', 57 }, { '}', 1197 }, { '>', 25137 } };
-
             var OpenBrackets = CompleteBrackets.Select(c => c.Key);
             var CloseBrackets = CompleteBrackets.Select(c => c.Value);
 
