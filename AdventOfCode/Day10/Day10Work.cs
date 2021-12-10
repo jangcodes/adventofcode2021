@@ -47,13 +47,8 @@ namespace AdventOfCode.Day10
 
                 if (illegalCharScore == 0)
                 {
-                    long incompleteScore = 0;
                     cleanedUpLine.Reverse();
-
-                    foreach (var c in cleanedUpLine)
-                        incompleteScore = (incompleteScore * 5) + IncompleteCharScores[c];
-
-                    incompleteScoreList.Add(incompleteScore);
+                    incompleteScoreList.Add(cleanedUpLine.Aggregate(0L, (t, n) => (t * 5) + IncompleteCharScores[n]));
                 }
             }
 
