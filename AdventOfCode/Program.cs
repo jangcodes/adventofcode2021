@@ -1,4 +1,5 @@
-﻿using AdventOfCode.Day9;
+﻿using AdventOfCode.Day10;
+using AdventOfCode.Day9;
 using System.Threading.Tasks;
 
 namespace AdventOfCode
@@ -7,7 +8,7 @@ namespace AdventOfCode
     {
         public static async Task Main()
         {
-            await Day9Work.Execute();
+            await Day10Work.Execute();
         }
     }
 }
