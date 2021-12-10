@@ -13,7 +13,7 @@ namespace AdventOfCode.Day10
 
         public static async Task Execute()
         {
-            string[] input = await File.ReadAllLinesAsync(@"Day10\Example.txt");
+            string[] input = await File.ReadAllLinesAsync(@"Day10\Input.txt");
 
             Part1(input);
             Part2(input);
@@ -21,27 +21,44 @@ namespace AdventOfCode.Day10
 
         private static void Part1(string[] input)
         {
+            int sum = 0;
+            foreach (var line in input)
+            {
+                sum += CheckSyntax(line);
+            }
 
+            Console.WriteLine($"Part 1 Answer: {sum}");
         }
 
-        private static void CheckSyntaxRecursive(string line)
+        private static int CheckSyntax(string line)
         {
             Dictionary<char, int> scoresPerChar = new() { { ')', 3 }, { ']', 57 }, { '}', 1197 }, { '>', 25137 } };
 
-            int totalScore = 0;
-
             var OpenBrackets = CompleteBrackets.Select(c => c.Key);
             var CloseBrackets = CompleteBrackets.Select(c => c.Value);
-            if (line.Length > 1 && OpenBrackets.Contains(line[0]) && !CloseBrackets.Contains(line[1]))
+
+            List<char> tempSolution = new();
+            foreach (var c in line)
             {
-                CheckSyntaxRecursive(line[1..]);
+                if (OpenBrackets.Contains(c))
+                {
+                    tempSolution.Add(c);
+                }
+                else if (CloseBrackets.Contains(c))
+                {
+                    if (CompleteBrackets[tempSolution.Last()] == c)
+                    {
+                        tempSolution.RemoveAt(tempSolution.Count - 1);
+                    }
+                    else
+                    {
+                        return scoresPerChar[c];
+                    }
+
+                }
             }
 
-            var correctClosing = CompleteBrackets[line[0]];
-            if (correctClosing != line[1])
-            {
-
-            }
+            return 0;
         }
 
         private static void Part2(string[] input)
