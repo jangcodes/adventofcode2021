@@ -7,64 +7,64 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Day10\Example.txt" />
-    <None Remove="Day10\Input.txt" />
-    <None Remove="Day4\Input.txt" />
-    <None Remove="Day5\Input.txt" />
-    <None Remove="Day6\Example.txt" />
-    <None Remove="Day6\Input.txt" />
-    <None Remove="Day7\Example.txt" />
-    <None Remove="Day7\Input.txt" />
-    <None Remove="Day8\Example.txt" />
-    <None Remove="Day8\Input.txt" />
-    <None Remove="Day9\Example.txt" />
-    <None Remove="Day9\Input.txt" />
+    <None Remove="Week2\Day10\Example.txt" />
+    <None Remove="Week2\Day10\Input.txt" />
+    <None Remove="Week1\Day4\Input.txt" />
+    <None Remove="Week1\Day5\Input.txt" />
+    <None Remove="Week1\Day6\Example.txt" />
+    <None Remove="Week1\Day6\Input.txt" />
+    <None Remove="Week1\Day7\Example.txt" />
+    <None Remove="Week1\Day7\Input.txt" />
+    <None Remove="Week2\Day08\Example.txt" />
+    <None Remove="Week2\Day08\Input.txt" />
+    <None Remove="Week2\Day09\Example.txt" />
+    <None Remove="Week2\Day09\Input.txt" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Day10\Example.txt">
+    <Content Include="Week2\Day10\Example.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Day10\Input.txt">
+    <Content Include="Week2\Day10\Input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Day1\Input.txt">
+    <Content Include="Week1\Day1\Input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Day2\Input.txt">
+    <Content Include="Week1\Day2\Input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Day3\Input.txt">
+    <Content Include="Week1\Day3\Input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Day4\Input.txt">
+    <Content Include="Week1\Day4\Input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Day5\Input.txt">
+    <Content Include="Week1\Day5\Input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Day6\Example.txt">
+    <Content Include="Week1\Day6\Example.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Day6\Input.txt">
+    <Content Include="Week1\Day6\Input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Day7\Example.txt">
+    <Content Include="Week1\Day7\Example.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Day7\Input.txt">
+    <Content Include="Week1\Day7\Input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Day8\Example.txt">
+    <Content Include="Week2\Day08\Example.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Day8\Input.txt">
+    <Content Include="Week2\Day08\Input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Day9\Example.txt">
+    <Content Include="Week2\Day09\Example.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Day9\Input.txt">
+    <Content Include="Week2\Day09\Input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
