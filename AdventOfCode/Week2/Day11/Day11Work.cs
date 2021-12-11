@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AdventOfCode.Week2.Day11
 {
     internal class Day11Work
     {
-        private const int Iteration = 195;
+        private const int Part1Iteration = 100;
         private static List<List<int>> Grid = new();
 
         public static async Task Execute()
@@ -17,9 +16,11 @@ namespace AdventOfCode.Week2.Day11
             string[] input = await File.ReadAllLinesAsync(@"Week2\Day11\Input.txt");
             Grid = input.Select(x => x.Select(y => y - '0').ToList()).ToList();
 
-            int part1Answer = 0;
+            int iterationCounter = 0;
+            int part1AnswerCounter = 0;
+            int part1FinalAnswer = 0;
 
-            for (int i = 0; i < Iteration; i++)
+            while (true)
             {
                 for (int r = 0; r < input.Length; r++)
                 {
@@ -36,27 +37,26 @@ namespace AdventOfCode.Week2.Day11
                         if (Grid[r][c] > 9)
                         {
                             Grid[r][c] = 0;
-                            part1Answer++;
+                            part1AnswerCounter++;
                         }
                     }
                 }
 
+                iterationCounter++;
 
-                //Console.WriteLine("-------------------");
-                //foreach (var line in Grid)
-                //{
-                //    foreach (var c in line)
-                //    {
-                //        if (c == 0) Console.ForegroundColor = ConsoleColor.Red;
-                //        Console.Write(c);
-                //        Console.ResetColor();
-                //    }
-                //    Console.WriteLine();
-                //}
-                //Console.WriteLine("-------------------");
+                if (Grid.All(x => x.All(y => y == 0)))
+                {
+                    break;
+                }
+
+                if (Part1Iteration == iterationCounter)
+                {
+                    part1FinalAnswer = part1AnswerCounter;
+                }
             }
 
-            Console.WriteLine($"Part 1 Answer: {part1Answer}");
+            Console.WriteLine($"Part 1 Answer: {part1FinalAnswer}");
+            Console.WriteLine($"Part 2 Answer: {iterationCounter}");
         }
 
         private static void MyResursiveFunction(int r, int c)
