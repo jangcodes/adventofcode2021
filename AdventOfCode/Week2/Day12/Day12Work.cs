@@ -24,13 +24,13 @@ namespace AdventOfCode.Week2.Day12
             foreach(var startPoint in startPoints)
             {
                 string firstPoint = startPoint.First(_ => _ != "start");
-                MyRecursiveFunction(firstPoint, new string[] { firstPoint });
+                FindCave(firstPoint, new string[] { firstPoint });
             }
 
             Console.WriteLine($"Part 1 Answer: {GlobalCounter}");
         }
 
-        private static void MyRecursiveFunction(string caveName, string[] currentPath)
+        private static void FindCave(string caveName, string[] currentPath)
         {
             var nextCaves = InputNoStart.Where(x => x.Contains(caveName));
 
@@ -44,7 +44,7 @@ namespace AdventOfCode.Week2.Day12
                 }
                 else if (nextPoint.All(_ => char.IsUpper(_)) || !currentPath.Contains(nextPoint))
                 {
-                    MyRecursiveFunction(nextPoint, currentPath.Append(nextPoint).ToArray());
+                    FindCave(nextPoint, currentPath.Append(nextPoint).ToArray());
                 }
              }
         }
