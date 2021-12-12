@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AdventOfCode.Week2.Day12
@@ -23,18 +22,27 @@ namespace AdventOfCode.Week2.Day12
             foreach (var startPoint in startPoints)
             {
                 string firstPoint = startPoint.First(_ => _ != "start");
-                possiblePaths += FindCave(firstPoint, new string[] { firstPoint });
+                possiblePaths += FindCave(firstPoint, new string[] { firstPoint }, 1);
             }
 
+            Console.WriteLine($"Part 1 Answer: {possiblePaths}");
+
+            possiblePaths = 0;
+            foreach (var startPoint in startPoints)
+            {
+                string firstPoint = startPoint.First(_ => _ != "start");
+                possiblePaths += FindCave(firstPoint, new string[] { firstPoint }, 2);
+            }
+            
             Console.WriteLine($"Part 2 Answer: {possiblePaths}");
         }
 
-        private static int FindCave(string caveName, string[] currentPath)
+        private static int FindCave(string caveName, string[] currentPath, int part)
         {
             int possiblePaths = 0;
             var nextCaves = InputNoStart.Where(x => x.Contains(caveName));
 
-            var dupeAllowed = !currentPath.Where(x => x.All(_ => char.IsLower(_))).GroupBy(_ => _).Any(x => x.Count() > 1);
+            var dupeAllowed = part == 2 && !currentPath.Where(x => x.All(_ => char.IsLower(_))).GroupBy(_ => _).Any(x => x.Count() > 1);
 
             foreach (var cave in nextCaves)
             {
@@ -46,7 +54,7 @@ namespace AdventOfCode.Week2.Day12
                 }
                 else if (dupeAllowed || nextPoint.All(_ => char.IsUpper(_)) || !currentPath.Contains(nextPoint))
                 {
-                    possiblePaths += FindCave(nextPoint, currentPath.Append(nextPoint).ToArray());
+                    possiblePaths += FindCave(nextPoint, currentPath.Append(nextPoint).ToArray(), part);
                 }
             }
 
