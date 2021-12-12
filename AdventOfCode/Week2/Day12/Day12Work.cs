@@ -11,8 +11,6 @@ namespace AdventOfCode.Week2.Day12
     {
         private static List<string[]> InputNoStart = new();
 
-        private static int GlobalCounter = 0;
-
         public static async Task Execute()
         {
             string[] input = await File.ReadAllLinesAsync(@"Week2\Day12\Input.txt");
@@ -21,17 +19,19 @@ namespace AdventOfCode.Week2.Day12
             InputNoStart = inputList.Where(x => !x.Contains("start")).ToList();
 
             var startPoints = inputList.Where(x => x.Contains("start"));
-            foreach(var startPoint in startPoints)
+            int possiblePaths = 0;
+            foreach (var startPoint in startPoints)
             {
                 string firstPoint = startPoint.First(_ => _ != "start");
-                FindCave(firstPoint, new string[] { firstPoint });
+                possiblePaths += FindCave(firstPoint, new string[] { firstPoint });
             }
 
-            Console.WriteLine($"Part 1 Answer: {GlobalCounter}");
+            Console.WriteLine($"Part 1 Answer: {possiblePaths}");
         }
 
-        private static void FindCave(string caveName, string[] currentPath)
+        private static int FindCave(string caveName, string[] currentPath)
         {
+            int possiblePaths = 0;
             var nextCaves = InputNoStart.Where(x => x.Contains(caveName));
 
             foreach (var cave in nextCaves)
@@ -40,13 +40,15 @@ namespace AdventOfCode.Week2.Day12
 
                 if (nextPoint == "end")
                 {
-                    GlobalCounter++;
+                    possiblePaths++;
                 }
                 else if (nextPoint.All(_ => char.IsUpper(_)) || !currentPath.Contains(nextPoint))
                 {
-                    FindCave(nextPoint, currentPath.Append(nextPoint).ToArray());
+                    possiblePaths += FindCave(nextPoint, currentPath.Append(nextPoint).ToArray());
                 }
-             }
+            }
+
+            return possiblePaths;
         }
     }
 }
