@@ -26,13 +26,15 @@ namespace AdventOfCode.Week2.Day12
                 possiblePaths += FindCave(firstPoint, new string[] { firstPoint });
             }
 
-            Console.WriteLine($"Part 1 Answer: {possiblePaths}");
+            Console.WriteLine($"Part 2 Answer: {possiblePaths}");
         }
 
         private static int FindCave(string caveName, string[] currentPath)
         {
             int possiblePaths = 0;
             var nextCaves = InputNoStart.Where(x => x.Contains(caveName));
+
+            var dupeAllowed = !currentPath.Where(x => x.All(_ => char.IsLower(_))).GroupBy(_ => _).Any(x => x.Count() > 1);
 
             foreach (var cave in nextCaves)
             {
@@ -42,7 +44,7 @@ namespace AdventOfCode.Week2.Day12
                 {
                     possiblePaths++;
                 }
-                else if (nextPoint.All(_ => char.IsUpper(_)) || !currentPath.Contains(nextPoint))
+                else if (dupeAllowed || nextPoint.All(_ => char.IsUpper(_)) || !currentPath.Contains(nextPoint))
                 {
                     possiblePaths += FindCave(nextPoint, currentPath.Append(nextPoint).ToArray());
                 }
