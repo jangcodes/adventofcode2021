@@ -32,22 +32,29 @@ namespace AdventOfCode.Week2.Day13
                 grid[c[1], c[0]]++;
             }
 
-            //foreach (var (foldAlong, coordinate) in foldingInstruction)
-            //{
-
-            var (foldAlong, coordinate) = foldingInstruction.First();
+            int lastX = 0;
+            int lastY = 0;
+            foreach (var (foldAlong, coordinate) in foldingInstruction)
+            {
                 if (foldAlong == 'x')
                 {
                     for (int i = coordinate + 1; i < grid.GetLength(1); i++)
                     {
                         int j = i - coordinate;
 
-                        for (int y = 0; y < grid.GetLength(0); y++)
+                        if (coordinate - j >= 0)
                         {
-                            grid[y, coordinate - j] += grid[y, i];
-                            grid[y, i] = 0;
+                            for (int y = 0; y < grid.GetLength(0); y++)
+                            {
+                                grid[y, coordinate - j] += grid[y, i];
+                                grid[y, i] = 0;
+                            }
                         }
+
+                        
                     }
+
+                    lastX = coordinate;
                 }
                 else
                 {
@@ -55,51 +62,57 @@ namespace AdventOfCode.Week2.Day13
                     {
                         int j = i - coordinate;
 
-                        for (int x = 0; x < grid.GetLength(1); x++)
+                        if (coordinate - j >= 0)
                         {
-                            grid[coordinate - j, x] += grid[i, x];
-                            grid[i, x] = 0;
+                            for (int x = 0; x < grid.GetLength(1); x++)
+                            {
+                                grid[coordinate - j, x] += grid[i, x];
+                                grid[i, x] = 0;
+                            }
                         }
+
+                        
                     }
+
+                    lastY = coordinate;
                 }
-            //}
-
-
-            int count = 0;
-
-            foreach(var item in grid)
-            {
-                if (item > 0) count++;
             }
 
-            Console.WriteLine($"Part 1 Answer: {count}");
+            PrintGrid(grid, lastY, lastX);
+
+            //int count = 0;
+
+            //foreach(var item in grid)
+            //{
+            //    if (item > 0) count++;
+            //}
+
+            //Console.WriteLine($"Part 1 Answer: {count}");
         }
 
 
 
 
-        private static void PrintGrid(int[,] grid)
+        private static void PrintGrid(int[,] grid, int lengthY, int lengthX)
         {
-            for (int y = 0; y < grid.GetLength(0); y++)
+            for (int y = 0; y < lengthY; y++)
             {
-                for (int x = 0; x < grid.GetLength(1); x++)
+                for (int x = 0; x < lengthX; x++)
                 {
                     if (grid[y, x] > 0)
                     {
                         Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.Write(1);
                     }
                     else
                     {
                         Console.ForegroundColor = ConsoleColor.DarkGray;
+                        Console.Write(0);
                     }
-
-                    Console.Write(grid[y, x]);
                 }
                 Console.WriteLine();
             }
-
             Console.ResetColor();
-
             Console.WriteLine();
         }
     }
