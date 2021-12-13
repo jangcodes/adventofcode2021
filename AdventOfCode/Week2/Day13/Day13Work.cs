@@ -25,11 +25,11 @@ namespace AdventOfCode.Week2.Day13
             int Xmax = coordinates.Select(x => x[0]).Max();
             int Ymax = coordinates.Select(x => x[1]).Max();
 
-            int[,] grid = new int[Ymax + 1, Xmax + 1];
+            bool[,] grid = new bool[Ymax + 1, Xmax + 1];
 
             foreach (var c in coordinates)
             {
-                grid[c[1], c[0]]++;
+                grid[c[1], c[0]] = true;
             }
 
             int lastX = 0;
@@ -46,12 +46,10 @@ namespace AdventOfCode.Week2.Day13
                         {
                             for (int y = 0; y < grid.GetLength(0); y++)
                             {
-                                grid[y, coordinate - j] += grid[y, i];
-                                grid[y, i] = 0;
+                                grid[y, coordinate - j] = grid[y, i] || grid[y, coordinate - j];
+                                grid[y, i] = false;
                             }
-                        }
-
-                        
+                        }                        
                     }
 
                     lastX = coordinate;
@@ -66,48 +64,36 @@ namespace AdventOfCode.Week2.Day13
                         {
                             for (int x = 0; x < grid.GetLength(1); x++)
                             {
-                                grid[coordinate - j, x] += grid[i, x];
-                                grid[i, x] = 0;
+                                grid[coordinate - j, x] = grid[i, x] || grid[coordinate - j, x];
+                                grid[i, x] = false;
                             }
-                        }
-
-                        
+                        }                        
                     }
 
                     lastY = coordinate;
                 }
             }
 
+            Console.WriteLine("Part 2 Answer:");
             PrintGrid(grid, lastY, lastX);
-
-            //int count = 0;
-
-            //foreach(var item in grid)
-            //{
-            //    if (item > 0) count++;
-            //}
-
-            //Console.WriteLine($"Part 1 Answer: {count}");
         }
 
 
-
-
-        private static void PrintGrid(int[,] grid, int lengthY, int lengthX)
+        private static void PrintGrid(bool[,] grid, int lengthY, int lengthX)
         {
             for (int y = 0; y < lengthY; y++)
             {
                 for (int x = 0; x < lengthX; x++)
                 {
-                    if (grid[y, x] > 0)
+                    if (grid[y, x])
                     {
                         Console.ForegroundColor = ConsoleColor.Cyan;
-                        Console.Write(1);
+                        Console.Write('#');
                     }
                     else
                     {
                         Console.ForegroundColor = ConsoleColor.DarkGray;
-                        Console.Write(0);
+                        Console.Write(' ');
                     }
                 }
                 Console.WriteLine();
