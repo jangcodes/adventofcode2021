@@ -34,6 +34,7 @@ namespace AdventOfCode.Week2.Day13
 
             int lastX = 0;
             int lastY = 0;
+            bool showPart1Answer = true;
             foreach (var (foldAlong, coordinate) in foldingInstruction)
             {
                 if (foldAlong == 'x')
@@ -41,7 +42,6 @@ namespace AdventOfCode.Week2.Day13
                     for (int i = coordinate + 1; i < grid.GetLength(1); i++)
                     {
                         int j = i - coordinate;
-
                         if (coordinate - j >= 0)
                         {
                             for (int y = 0; y < grid.GetLength(0); y++)
@@ -51,7 +51,6 @@ namespace AdventOfCode.Week2.Day13
                             }
                         }                        
                     }
-
                     lastX = coordinate;
                 }
                 else
@@ -59,7 +58,6 @@ namespace AdventOfCode.Week2.Day13
                     for (int i = coordinate + 1; i < grid.GetLength(0); i++)
                     {
                         int j = i - coordinate;
-
                         if (coordinate - j >= 0)
                         {
                             for (int x = 0; x < grid.GetLength(1); x++)
@@ -69,8 +67,15 @@ namespace AdventOfCode.Week2.Day13
                             }
                         }                        
                     }
-
                     lastY = coordinate;
+                }
+
+                if (showPart1Answer)
+                {
+                    int part1Answer = 0;
+                    foreach(var item in grid) if (item) part1Answer++;
+                    Console.WriteLine($"Part 1 Answer: {part1Answer}");
+                    showPart1Answer = false; ;
                 }
             }
 
