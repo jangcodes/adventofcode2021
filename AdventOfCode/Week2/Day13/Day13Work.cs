@@ -69,7 +69,7 @@ namespace AdventOfCode.Week2.Day13
                     int part1Answer = 0;
                     foreach (var item in grid) if (item) part1Answer++;
                     Console.WriteLine($"Part 1 Answer: {part1Answer}");
-                    showPart1Answer = false; ;
+                    showPart1Answer = false;
                 }
             }
 
