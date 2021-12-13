@@ -11,7 +11,7 @@ namespace AdventOfCode.Week2.Day13
     {
         public static async Task Execute()
         {
-            string[] input = await File.ReadAllLinesAsync(@"Week2\Day13\Example.txt");
+            string[] input = await File.ReadAllLinesAsync(@"Week2\Day13\Input.txt");
 
             IEnumerable<int[]> coordinates = input
                 .Where(x => x.Contains(','))
@@ -20,46 +20,71 @@ namespace AdventOfCode.Week2.Day13
             var foldingInstruction = input
                 .Where(x => x.Contains("fold along "))
                 .Select(x => x.Replace("fold along ", ""))
-                .Select(x => (c:x[0], v: Convert.ToInt32(x[2..])));
+                .Select(x => (c: x[0], v: Convert.ToInt32(x[2..])));
 
             int Xmax = coordinates.Select(x => x[0]).Max();
             int Ymax = coordinates.Select(x => x[1]).Max();
 
-            int[,] grid = new int[Xmax + 1, Ymax + 1];
+            int[,] grid = new int[Ymax + 1, Xmax + 1];
 
             foreach (var c in coordinates)
             {
-                grid[c[0], c[1]]++;
+                grid[c[1], c[0]]++;
             }
 
-            foreach (var (foldAlong, coordinate) in foldingInstruction)
-            {
+            //foreach (var (foldAlong, coordinate) in foldingInstruction)
+            //{
+
+            var (foldAlong, coordinate) = foldingInstruction.First();
                 if (foldAlong == 'x')
+                {
+                    for (int i = coordinate + 1; i < grid.GetLength(1); i++)
+                    {
+                        int j = i - coordinate;
+
+                        for (int y = 0; y < grid.GetLength(0); y++)
+                        {
+                            grid[y, coordinate - j] += grid[y, i];
+                            grid[y, i] = 0;
+                        }
+                    }
+                }
+                else
                 {
                     for (int i = coordinate + 1; i < grid.GetLength(0); i++)
                     {
                         int j = i - coordinate;
 
-                        for (int y = 0; y < grid.GetLength(1); y++)
+                        for (int x = 0; x < grid.GetLength(1); x++)
                         {
-                            grid[j, y] += grid[i, y];
-                            grid[i, y] = 0;
+                            grid[coordinate - j, x] += grid[i, x];
+                            grid[i, x] = 0;
                         }
                     }
                 }
+            //}
+
+
+            int count = 0;
+
+            foreach(var item in grid)
+            {
+                if (item > 0) count++;
             }
 
-            PrintGrid(grid);
+            Console.WriteLine($"Part 1 Answer: {count}");
         }
 
 
-        private static void PrintGrid(int [,] grid)
+
+
+        private static void PrintGrid(int[,] grid)
         {
-            for(int y = 0; y < grid.GetLength(1); y++)
+            for (int y = 0; y < grid.GetLength(0); y++)
             {
-                for(int x = 0; x < grid.GetLength(0); x++)
+                for (int x = 0; x < grid.GetLength(1); x++)
                 {
-                    if (grid[x, y] > 0)
+                    if (grid[y, x] > 0)
                     {
                         Console.ForegroundColor = ConsoleColor.Cyan;
                     }
@@ -68,10 +93,14 @@ namespace AdventOfCode.Week2.Day13
                         Console.ForegroundColor = ConsoleColor.DarkGray;
                     }
 
-                    Console.Write(grid[x, y]);
+                    Console.Write(grid[y, x]);
                 }
                 Console.WriteLine();
             }
+
+            Console.ResetColor();
+
+            Console.WriteLine();
         }
     }
 }
