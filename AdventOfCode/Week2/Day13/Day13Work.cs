@@ -32,14 +32,14 @@ namespace AdventOfCode.Week2.Day13
                 grid[c[1], c[0]] = true;
             }
 
-            int lastX = 0;
-            int lastY = 0;
+            int lastX = Xmax;
+            int lastY = Ymax;
             bool showPart1Answer = true;
             foreach (var (foldAlong, coordinate) in foldingInstruction)
             {
                 if (foldAlong == 'x')
                 {
-                    for (int i = coordinate + 1; i < grid.GetLength(1); i++)
+                    for (int i = coordinate + 1; i <= lastX; i++)
                     {
                         int j = i - coordinate;
                         if (coordinate - j >= 0)
@@ -55,7 +55,7 @@ namespace AdventOfCode.Week2.Day13
                 }
                 else
                 {
-                    for (int i = coordinate + 1; i < grid.GetLength(0); i++)
+                    for (int i = coordinate + 1; i <= lastY; i++)
                     {
                         int j = i - coordinate;
                         if (coordinate - j >= 0)
