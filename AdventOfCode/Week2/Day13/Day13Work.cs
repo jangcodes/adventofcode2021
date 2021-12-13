@@ -10,6 +10,9 @@ namespace AdventOfCode.Week2.Day13
     {
         public static async Task Execute()
         {
+            var watch = new System.Diagnostics.Stopwatch();
+            watch.Start();
+
             string[] input = await File.ReadAllLinesAsync(@"Week2\Day13\Input.txt");
 
             var coordinates = input
@@ -35,12 +38,12 @@ namespace AdventOfCode.Week2.Day13
                 {
                     for (int i = coordinate + 1; i <= lastX; i++)
                     {
-                        int j = i - coordinate;
-                        if (coordinate - j >= 0)
+                        int x = (2 * coordinate) - i;
+                        if (x >= 0)
                         {
                             for (int y = 0; y < grid.GetLength(0); y++)
                             {
-                                grid[y, coordinate - j] = grid[y, i] || grid[y, coordinate - j];
+                                grid[y, x] = grid[y, i] || grid[y, x];
                                 grid[y, i] = false;
                             }
                         }
@@ -51,12 +54,12 @@ namespace AdventOfCode.Week2.Day13
                 {
                     for (int i = coordinate + 1; i <= lastY; i++)
                     {
-                        int j = i - coordinate;
-                        if (coordinate - j >= 0)
+                        int y = (2 * coordinate) - i;
+                        if (y >= 0)
                         {
                             for (int x = 0; x < grid.GetLength(1); x++)
                             {
-                                grid[coordinate - j, x] = grid[i, x] || grid[coordinate - j, x];
+                                grid[y, x] = grid[i, x] || grid[y, x];
                                 grid[i, x] = false;
                             }
                         }
@@ -75,25 +78,20 @@ namespace AdventOfCode.Week2.Day13
 
             Console.WriteLine("Part 2 Answer:");
             PrintGrid(grid, lastY, lastX);
+
+            watch.Stop();
+            Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
         }
 
 
         private static void PrintGrid(bool[,] grid, int lengthY, int lengthX)
         {
+            Console.ForegroundColor = ConsoleColor.Cyan;
             for (int y = 0; y < lengthY; y++)
             {
                 for (int x = 0; x < lengthX; x++)
                 {
-                    if (grid[y, x])
-                    {
-                        Console.ForegroundColor = ConsoleColor.Cyan;
-                        Console.Write('#');
-                    }
-                    else
-                    {
-                        Console.ForegroundColor = ConsoleColor.DarkGray;
-                        Console.Write(' ');
-                    }
+                    Console.Write(grid[y, x] ? '#' : ' ');
                 }
                 Console.WriteLine();
             }
