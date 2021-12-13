@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AdventOfCode.Week2.Day13
@@ -13,7 +12,7 @@ namespace AdventOfCode.Week2.Day13
         {
             string[] input = await File.ReadAllLinesAsync(@"Week2\Day13\Input.txt");
 
-            IEnumerable<int[]> coordinates = input
+            var coordinates = input
                 .Where(x => x.Contains(','))
                 .Select(x => x.Split(',').Select(y => Convert.ToInt32(y)).ToArray());
 
@@ -22,18 +21,13 @@ namespace AdventOfCode.Week2.Day13
                 .Select(x => x.Replace("fold along ", ""))
                 .Select(x => (c: x[0], v: Convert.ToInt32(x[2..])));
 
-            int Xmax = coordinates.Select(x => x[0]).Max();
-            int Ymax = coordinates.Select(x => x[1]).Max();
+            int lastX = coordinates.Select(x => x[0]).Max();
+            int lastY = coordinates.Select(x => x[1]).Max();
 
-            bool[,] grid = new bool[Ymax + 1, Xmax + 1];
+            bool[,] grid = new bool[lastY + 1, lastX + 1];
 
-            foreach (var c in coordinates)
-            {
-                grid[c[1], c[0]] = true;
-            }
+            foreach (var c in coordinates) grid[c[1], c[0]] = true;
 
-            int lastX = Xmax;
-            int lastY = Ymax;
             bool showPart1Answer = true;
             foreach (var (foldAlong, coordinate) in foldingInstruction)
             {
@@ -49,7 +43,7 @@ namespace AdventOfCode.Week2.Day13
                                 grid[y, coordinate - j] = grid[y, i] || grid[y, coordinate - j];
                                 grid[y, i] = false;
                             }
-                        }                        
+                        }
                     }
                     lastX = coordinate;
                 }
@@ -65,7 +59,7 @@ namespace AdventOfCode.Week2.Day13
                                 grid[coordinate - j, x] = grid[i, x] || grid[coordinate - j, x];
                                 grid[i, x] = false;
                             }
-                        }                        
+                        }
                     }
                     lastY = coordinate;
                 }
@@ -73,7 +67,7 @@ namespace AdventOfCode.Week2.Day13
                 if (showPart1Answer)
                 {
                     int part1Answer = 0;
-                    foreach(var item in grid) if (item) part1Answer++;
+                    foreach (var item in grid) if (item) part1Answer++;
                     Console.WriteLine($"Part 1 Answer: {part1Answer}");
                     showPart1Answer = false; ;
                 }
