@@ -23,15 +23,34 @@ namespace AdventOfCode.Week2.Day14
 
             for (int s = 0; s < steps; s++)
             {
-                foreach(var i in instructions)
+                Dictionary<int, string> applicableInstruction = new Dictionary<int, string>();
+
+                foreach (var i in instructions)
                 {
                     var allIndex = AllIndexOf(text, i[0]);
+
+                    foreach (var a in allIndex)
+                    {
+                        applicableInstruction.Add(a, i[1]);
+                    }
                 }
 
-                
+                int offset = 0;
+                foreach (var index in applicableInstruction.OrderBy(x => x.Key))
+                { 
+                    text = text.Insert(index.Key + 1 + offset, index.Value);
+                    offset++;
+                }
             }
 
-            Console.WriteLine($"Part 1 Answer: ");
+            var grouped = text.ToCharArray().GroupBy(_ => _).OrderBy(x => x.Count());
+
+            var top = grouped.First();
+            var bottom = grouped.Last();
+
+            
+
+            Console.WriteLine($"Part 1 Answer: {bottom.Count() - top.Count()} ");
 
             watch.Stop();
             Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
