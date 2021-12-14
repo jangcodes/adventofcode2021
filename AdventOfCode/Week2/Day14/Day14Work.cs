@@ -2,15 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AdventOfCode.Week2.Day14
 {
     internal class Day14Work
     {
-        private const int steps = 10;
-
         public static async Task Execute()
         {
             var watch = new System.Diagnostics.Stopwatch();
@@ -21,6 +18,15 @@ namespace AdventOfCode.Week2.Day14
             var text = input[0];
             var instructions = input[2..].Select(x => x.Split(" -> "));
 
+            Console.WriteLine($"Part 1 Answer: {Compute(text, instructions, 10)}");
+            Console.WriteLine($"Part 2 Answer: {Compute(text, instructions, 40)}");
+
+            watch.Stop();
+            Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
+        }
+
+        private static long Compute(string text, IEnumerable<string[]> instructions, int steps)
+        {
             Dictionary<string, long> possibleCombination = new();
 
             Dictionary<char, long> charCounter = text.ToCharArray().GroupBy(_ => _).ToDictionary(x => x.Key, x => Convert.ToInt64(x.Count()));
@@ -51,34 +57,25 @@ namespace AdventOfCode.Week2.Day14
                     }
                 }
 
-                List<int> removeCombo = new ();
-                Dictionary<string, long> newCombination = new ();
+                List<int> removeCombo = new();
+                Dictionary<string, long> newCombination = new();
 
                 foreach (var ins in instructionFound)
                 {
                     var currentCount = possibleCombination[ins[0]];
+                    string[] insCombo = { ins[0][0] + ins[1], ins[1] + ins[0][1] };
 
-                    var newCombo1 = ins[0][0] + ins[1];
-                    var newCombo2 = ins[1] + ins[0][1];
-
-                    if (newCombination.ContainsKey(newCombo1))
+                    foreach(var c in insCombo)
                     {
-                        newCombination[newCombo1] += currentCount;
+                        if (newCombination.ContainsKey(c))
+                        {
+                            newCombination[c] += currentCount;
+                        }
+                        else
+                        {
+                            newCombination.Add(c, currentCount);
+                        }
                     }
-                    else
-                    {
-                        newCombination.Add(newCombo1, currentCount);
-                    }
-
-                    if (newCombination.ContainsKey(newCombo2))
-                    {
-                        newCombination[newCombo2] += currentCount;
-                    }
-                    else
-                    {
-                        newCombination.Add(newCombo2, currentCount);
-                    }
-
 
                     if (charCounter.ContainsKey(ins[1][0]))
                     {
@@ -86,41 +83,18 @@ namespace AdventOfCode.Week2.Day14
                     }
                     else
                     {
-                        charCounter.Add(ins[1][0], currentCount);                    
+                        charCounter.Add(ins[1][0], currentCount);
                     }
 
-
                     possibleCombination.Remove(ins[0]);
-
                 }
 
-
                 possibleCombination = possibleCombination.Concat(newCombination).ToDictionary(x => x.Key, x => x.Value);
-                
             }
 
-            var sortedOutcome = charCounter.OrderBy(x => x.Value);
+            var sortedOutcome = charCounter.Select(x => x.Value);
 
-            var smallest = sortedOutcome.First().Value;
-            var largest = sortedOutcome.Last().Value;
-
-            Console.WriteLine($"Part 1 Answer: {largest - smallest}");
-
-            watch.Stop();
-            Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
-        }
-
-
-        public static IList<int> AllIndexOf(string text, string str)
-        {
-            IList<int> allIndexOf = new List<int>();
-            int index = text.IndexOf(str);
-            while (index != -1)
-            {
-                allIndexOf.Add(index);
-                index = text.IndexOf(str, index + 1);
-            }
-            return allIndexOf;
+            return sortedOutcome.Max() - sortedOutcome.Min();
         }
     }
 }
