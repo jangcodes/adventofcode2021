@@ -28,13 +28,10 @@ namespace AdventOfCode.Week2.Day14
         private static long Compute(string text, IEnumerable<string[]> instructions, int steps)
         {
             Dictionary<string, long> possibleCombination = new();
-
-            Dictionary<char, long> charCounter = text.ToCharArray().GroupBy(_ => _).ToDictionary(x => x.Key, x => Convert.ToInt64(x.Count()));
-
+            var charCounter = text.ToCharArray().GroupBy(_ => _).ToDictionary(x => x.Key, x => Convert.ToInt64(x.Count()));
             for (int i = 0; i < text.Length - 1; i++)
             {
                 string combo = text.Substring(i, 2);
-
                 if (possibleCombination.ContainsKey(combo))
                 {
                     possibleCombination[combo]++;
