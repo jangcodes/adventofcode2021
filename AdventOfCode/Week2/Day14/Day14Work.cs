@@ -47,23 +47,15 @@ namespace AdventOfCode.Week2.Day14
 
             for (int s = 0; s < steps; s++)
             {
-                List<string[]> instructionFound = new();
-
-                foreach (var ins in instructions)
-                {
-                    if (possibleCombination.ContainsKey(ins[0]))
-                    {
-                        instructionFound.Add(ins);
-                    }
-                }
+                var pairFound = instructions.Where(x => possibleCombination.ContainsKey(x[0]));
 
                 List<int> removeCombo = new();
                 Dictionary<string, long> newCombination = new();
 
-                foreach (var ins in instructionFound)
+                foreach (var pair in pairFound)
                 {
-                    var currentCount = possibleCombination[ins[0]];
-                    string[] insCombo = { ins[0][0] + ins[1], ins[1] + ins[0][1] };
+                    var currentCount = possibleCombination[pair[0]];
+                    string[] insCombo = { pair[0][0] + pair[1], pair[1] + pair[0][1] };
 
                     foreach(var c in insCombo)
                     {
@@ -77,23 +69,22 @@ namespace AdventOfCode.Week2.Day14
                         }
                     }
 
-                    if (charCounter.ContainsKey(ins[1][0]))
+                    if (charCounter.ContainsKey(pair[1][0]))
                     {
-                        charCounter[ins[1][0]] += currentCount;
+                        charCounter[pair[1][0]] += currentCount;
                     }
                     else
                     {
-                        charCounter.Add(ins[1][0], currentCount);
+                        charCounter.Add(pair[1][0], currentCount);
                     }
 
-                    possibleCombination.Remove(ins[0]);
+                    possibleCombination.Remove(pair[0]);
                 }
 
                 possibleCombination = possibleCombination.Concat(newCombination).ToDictionary(x => x.Key, x => x.Value);
             }
 
             var sortedOutcome = charCounter.Select(x => x.Value);
-
             return sortedOutcome.Max() - sortedOutcome.Min();
         }
     }
