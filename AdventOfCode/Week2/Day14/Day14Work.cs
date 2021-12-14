@@ -14,12 +14,12 @@ namespace AdventOfCode.Week2.Day14
             var watch = new System.Diagnostics.Stopwatch();
             watch.Start();
 
-            string[] input = await File.ReadAllLinesAsync(@"Week2\Day14\Example.txt");
+            string[] input = await File.ReadAllLinesAsync(@"Week2\Day14\Input.txt");
 
             var text = input[0];
             var instructions = input[2..].Select(x => x.Split(" -> "));
 
-            const int steps = 5;
+            const int steps = 10;
 
             for (int s = 0; s < steps; s++)
             {
@@ -45,12 +45,10 @@ namespace AdventOfCode.Week2.Day14
 
             var grouped = text.ToCharArray().GroupBy(_ => _).OrderBy(x => x.Count());
 
-            var top = grouped.First();
-            var bottom = grouped.Last();
+            var top = grouped.First().Count();
+            var bottom = grouped.Last().Count();            
 
-            
-
-            Console.WriteLine($"Part 1 Answer: {bottom.Count() - top.Count()} ");
+            Console.WriteLine($"Part 1 Answer: {bottom - top} ");
 
             watch.Stop();
             Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
