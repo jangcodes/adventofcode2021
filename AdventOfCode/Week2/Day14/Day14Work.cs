@@ -32,14 +32,7 @@ namespace AdventOfCode.Week2.Day14
             for (int i = 0; i < text.Length - 1; i++)
             {
                 string combo = text.Substring(i, 2);
-                if (possibleCombination.ContainsKey(combo))
-                {
-                    possibleCombination[combo]++;
-                }
-                else
-                {
-                    possibleCombination.Add(combo, 1L);
-                }
+                DictionaryCounter(possibleCombination, combo, 1);
             }
 
             for (int s = 0; s < steps; s++)
@@ -53,28 +46,8 @@ namespace AdventOfCode.Week2.Day14
                 {
                     var currentCount = possibleCombination[pair[0]];
                     string[] insCombo = { pair[0][0] + pair[1], pair[1] + pair[0][1] };
-
-                    foreach(var c in insCombo)
-                    {
-                        if (newCombination.ContainsKey(c))
-                        {
-                            newCombination[c] += currentCount;
-                        }
-                        else
-                        {
-                            newCombination.Add(c, currentCount);
-                        }
-                    }
-
-                    if (charCounter.ContainsKey(pair[1][0]))
-                    {
-                        charCounter[pair[1][0]] += currentCount;
-                    }
-                    else
-                    {
-                        charCounter.Add(pair[1][0], currentCount);
-                    }
-
+                    insCombo.ToList().ForEach(c => DictionaryCounter(newCombination, c, currentCount));
+                    DictionaryCounter(charCounter, pair[1][0], currentCount);
                     possibleCombination.Remove(pair[0]);
                 }
 
@@ -83,6 +56,19 @@ namespace AdventOfCode.Week2.Day14
 
             var sortedOutcome = charCounter.Select(x => x.Value);
             return sortedOutcome.Max() - sortedOutcome.Min();
+        }
+
+        private static void DictionaryCounter<TKey>(Dictionary<TKey, long> currentDic, TKey key, long value)
+            where TKey : notnull
+        {
+            if (currentDic.ContainsKey(key))
+            {
+                currentDic[key] += value;
+            }
+            else
+            {
+                currentDic.Add(key, value);
+            }
         }
     }
 }
