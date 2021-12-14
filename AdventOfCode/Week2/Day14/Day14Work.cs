@@ -39,7 +39,6 @@ namespace AdventOfCode.Week2.Day14
             {
                 var pairFound = instructions.Where(x => possibleCombination.ContainsKey(x[0]));
 
-                List<int> removeCombo = new();
                 Dictionary<string, long> newCombination = new();
 
                 foreach (var pair in pairFound)
