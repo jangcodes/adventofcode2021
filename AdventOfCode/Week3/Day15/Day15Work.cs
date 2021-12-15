@@ -45,20 +45,10 @@ namespace AdventOfCode.Week3.Day15
                 return result += AddPathRecursively(y + 1, x);
             }
 
-            var right = grid[y][x + 1];
-            var down = grid[y + 1][x];
+            var rightPathSum = AddPathRecursively(y, x + 1);
+            var downPathSum = AddPathRecursively(y + 1, x);
 
-            if (right == down)
-            {
-                var rightPathSum = AddPathRecursively(y, x + 1);
-                var downPathSum = AddPathRecursively(y + 1, x);
-
-                result += Math.Min(rightPathSum, downPathSum);
-            }
-            else
-            {
-                result += right < down ? AddPathRecursively(y, x + 1) : AddPathRecursively(y + 1, x);
-            }
+            result += Math.Min(rightPathSum, downPathSum);
 
             return result;
         }
