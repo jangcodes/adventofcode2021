@@ -9,15 +9,58 @@ namespace AdventOfCode.Week3.Day15
 {
     internal class Day15Work
     {
+        private static List<int[]> grid = new List<int[]>();
+
         public static async Task Execute()
         {
-            string[] input = await File.ReadAllLinesAsync(@"Week2\Day14\Example.txt");
+            string[] input = await File.ReadAllLinesAsync(@"Week3\Day15\Example.txt");
 
             var row = input.Length;
             var col = input[0].Length;
 
-            List<int[]> grid = input.Select(x => x.Split().Select(y => Convert.ToInt32(y)).ToArray()).ToList();
+            grid = input.Select(x => x.ToCharArray().Select(y => y - '0').ToArray()).ToList();
 
+            int result = AddPathRecursively(0, 0);
+
+            Console.WriteLine($"Part 1 Answer: {result - grid[0][0] }");
+        }
+
+
+        private static int AddPathRecursively(int y, int x)
+        {
+            int result = grid[y][x];
+
+            if (y == grid.Count - 1 && x == grid[0].Length - 1)
+            {
+                return result;
+            }
+
+            if (y == grid.Count - 1)
+            {
+                return result += AddPathRecursively(y, x + 1);
+            }
+
+            if (x == grid[0].Length - 1)
+            {
+                return result += AddPathRecursively(y + 1, x);
+            }
+
+            var right = grid[y][x + 1];
+            var down = grid[y + 1][x];
+
+            if (right == down)
+            {
+                var rightPathSum = AddPathRecursively(y, x + 1);
+                var downPathSum = AddPathRecursively(y + 1, x);
+
+                result += Math.Min(rightPathSum, downPathSum);
+            }
+            else
+            {
+                result += right < down ? AddPathRecursively(y, x + 1) : AddPathRecursively(y + 1, x);
+            }
+
+            return result;
         }
     }
 }
