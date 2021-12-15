@@ -10,9 +10,6 @@ namespace AdventOfCode.Week2.Day14
     {
         public static async Task Execute()
         {
-            var watch = new System.Diagnostics.Stopwatch();
-            watch.Start();
-
             string[] input = await File.ReadAllLinesAsync(@"Week2\Day14\Input.txt");
 
             var text = input[0];
@@ -20,9 +17,6 @@ namespace AdventOfCode.Week2.Day14
 
             Console.WriteLine($"Part 1 Answer: {Compute(text, instructions, 10)}");
             Console.WriteLine($"Part 2 Answer: {Compute(text, instructions, 40)}");
-
-            watch.Stop();
-            Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
         }
 
         private static long Compute(string text, IEnumerable<string[]> instructions, int steps)

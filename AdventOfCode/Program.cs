@@ -1,4 +1,5 @@
-﻿using AdventOfCode.Week2.Day14;
+﻿using AdventOfCode.Week3.Day15;
+using System;
 using System.Threading.Tasks;
 
 namespace AdventOfCode
@@ -7,7 +8,13 @@ namespace AdventOfCode
     {
         public static async Task Main()
         {
-            await Day14Work.Execute();
+            var watch = new System.Diagnostics.Stopwatch();
+            watch.Start();
+
+            await Day15Work.Execute();
+
+            watch.Stop();
+            Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
         }
     }
 }

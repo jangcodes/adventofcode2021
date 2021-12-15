@@ -10,9 +10,6 @@ namespace AdventOfCode.Week2.Day13
     {
         public static async Task Execute()
         {
-            var watch = new System.Diagnostics.Stopwatch();
-            watch.Start();
-
             string[] input = await File.ReadAllLinesAsync(@"Week2\Day13\Input.txt");
 
             var coordinates = input
@@ -78,9 +75,6 @@ namespace AdventOfCode.Week2.Day13
 
             Console.WriteLine("Part 2 Answer:");
             PrintGrid(grid, lastY, lastX);
-
-            watch.Stop();
-            Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
         }
 
 
