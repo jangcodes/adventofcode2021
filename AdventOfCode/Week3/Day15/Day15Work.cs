@@ -11,10 +11,12 @@ namespace AdventOfCode.Week3.Day15
     {
         public static async Task Execute()
         {
-            
-
             string[] input = await File.ReadAllLinesAsync(@"Week2\Day14\Example.txt");
 
+            var row = input.Length;
+            var col = input[0].Length;
+
+            List<int[]> grid = input.Select(x => x.Split().Select(y => Convert.ToInt32(y)).ToArray()).ToList();
 
         }
     }
