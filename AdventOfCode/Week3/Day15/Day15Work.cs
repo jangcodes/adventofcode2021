@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AdventOfCode.Week3.Day15
@@ -23,45 +22,40 @@ namespace AdventOfCode.Week3.Day15
 
             grid = input.Select(x => x.ToCharArray().Select(y => y - '0').ToArray()).ToList();
 
-            List<Pos> unvisited = new();
-            Dictionary<Pos, int> shortestDistanceFromOrigin = new();
+            List<Position> unvisited = new();
+            Dictionary<Position, int> shortestDistanceFromOrigin = new();
 
             for (int y = 0; y < row; y++)
             {
                 for (int x = 0; x < col; x++)
                 {
-                    Pos p = new(y, x);
+                    Position p = new(y, x);
                     shortestDistanceFromOrigin.Add(p, int.MaxValue);
                     unvisited.Add(p);
                 }
             }
 
-            var currentPosition = new Pos(0, 0);
+            var currentPosition = new Position(0, 0);
             shortestDistanceFromOrigin[currentPosition] = 0;
 
             while (true)
             {
-                // var watch = new System.Diagnostics.Stopwatch();
-                // watch.Start();
 
                 var items =
-                    from aaa in shortestDistanceFromOrigin
-                    join bbb in unvisited on aaa.Key equals bbb
-                    select aaa;
+                    from sdf in shortestDistanceFromOrigin
+                    join u in unvisited on sdf.Key equals u
+                    select sdf;
 
                 var shortestUnvisitedPair = items.OrderBy(x => x.Value).First();
 
                 var shortedUnvisited = shortestUnvisitedPair.Key;
 
-                // watch.Stop();
-                // Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
+                Position n1 = new(shortedUnvisited.Y, shortedUnvisited.X + 1);
+                Position n2 = new(shortedUnvisited.Y, shortedUnvisited.X - 1);
+                Position n3 = new(shortedUnvisited.Y + 1, shortedUnvisited.X);
+                Position n4 = new(shortedUnvisited.Y - 1, shortedUnvisited.X);
 
-                Pos n1 = new(shortedUnvisited.Y, shortedUnvisited.X + 1);
-                Pos n2 = new(shortedUnvisited.Y, shortedUnvisited.X - 1);
-                Pos n3 = new(shortedUnvisited.Y + 1, shortedUnvisited.X);
-                Pos n4 = new(shortedUnvisited.Y - 1, shortedUnvisited.X);
-
-                Pos[] allNeighbors = new Pos[] { n1, n2, n3, n4 };
+                Position[] allNeighbors = new Position[] { n1, n2, n3, n4 };
 
                 foreach (var n in allNeighbors)
                 {
@@ -88,36 +82,22 @@ namespace AdventOfCode.Week3.Day15
 
             }
 
-            Pos lastPoint = new(row - 1, col - 1);
+            Position lastPoint = new(row - 1, col - 1);
             Console.WriteLine($"Part 1 Answer: {shortestDistanceFromOrigin[lastPoint]}");
         }
-
     }
 
-    internal struct Pos
+    internal struct Position
     {
         public int Y { get; }
 
         public int X { get; }
 
 
-        public Pos(int y, int x)
+        public Position(int y, int x)
         {
             Y = y;
             X = x;
-        }
-    }
-
-    internal struct Point
-    {
-        public int ShortestDistance { get; }
-
-        public Pos PreviousPos { get; }
-
-        public Point(int s, Pos p)
-        {
-            ShortestDistance = s;
-            PreviousPos = p;
         }
     }
 }
