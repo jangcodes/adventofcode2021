@@ -9,105 +9,110 @@ namespace AdventOfCode.Week3.Day15
 {
     internal class Day15Work
     {
+        // Got a hint from reddit to implement Dijkstra's Algorithm
+        // https://www.youtube.com/watch?v=pVfj6mxhdMw
+
         private static List<int[]> grid = new List<int[]>();
-        private static int lowest = 0;
 
         public static async Task Execute()
         {
-            string[] input = await File.ReadAllLinesAsync(@"Week3\Day15\Example.txt");
+            string[] input = await File.ReadAllLinesAsync(@"Week3\Day15\Input.txt");
 
             var row = input.Length;
             var col = input[0].Length;
 
             grid = input.Select(x => x.ToCharArray().Select(y => y - '0').ToArray()).ToList();
 
+            List<Pos> unvisited = new();
+            Dictionary<Pos, int> shortestDistanceFromOrigin = new();
+
             for (int y = 0; y < row; y++)
             {
-                lowest += grid[y][y];
-               
-                if (y < row - 1)
+                for (int x = 0; x < col; x++)
                 {
-                    lowest += grid[y + 1][y];
+                    Pos p = new(y, x);
+                    shortestDistanceFromOrigin.Add(p, int.MaxValue);
+                    unvisited.Add(p);
                 }
             }
 
-            int result = AnotherRecursive(0, 0, 0);
+            var currentPosition = new Pos(0, 0);
+            shortestDistanceFromOrigin[currentPosition] = 0;
 
-            Console.WriteLine($"Part 1 Answer: {result - grid[0][0] }");
-        }
-
-
-        private static async Task<int> AddPathRecursively(int y, int x)
-        {
-            int result = grid[y][x];
-
-            if (y == grid.Count - 1 && x == grid[0].Length - 1)
+            while (true)
             {
-                return result;
-            }
+                var watch = new System.Diagnostics.Stopwatch();
+                watch.Start();
 
-            if (y == grid.Count - 1)
-            {
-                return result += await AddPathRecursively(y, x + 1);
-            }
+                var shortestUnvisitedPair = shortestDistanceFromOrigin.Where(x => unvisited.Contains(x.Key)).OrderBy(x => x.Value).First();
 
-            if (x == grid[0].Length - 1)
-            {
-                return result += await AddPathRecursively(y + 1, x);
-            }
+                var shortedUnvisited = shortestUnvisitedPair.Key;
 
-            var rightPath = AddPathRecursively(y, x + 1);
-            var downPath = AddPathRecursively(y + 1, x);
+                watch.Stop();
+                Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
 
+                Pos n1 = new(shortedUnvisited.Y, shortedUnvisited.X + 1);
+                Pos n2 = new(shortedUnvisited.Y, shortedUnvisited.X - 1);
+                Pos n3 = new(shortedUnvisited.Y + 1, shortedUnvisited.X);
+                Pos n4 = new(shortedUnvisited.Y - 1, shortedUnvisited.X);
 
-            var rightPathSum = await rightPath;
-            var downPathSum = await downPath;
+                Pos[] allNeighbors = new Pos[] { n1, n2, n3, n4 };
 
-            result += Math.Min(rightPathSum, downPathSum);
-
-            return result;
-        }
-
-
-        private static int AnotherRecursive(int y, int x, int currentSum)
-        {
-            int result = grid[y][x];
-            currentSum += result;
-
-
-            if (currentSum >= lowest)
-            {
-                return lowest;
-            }
-
-            if (y == grid.Count - 1 && x == grid[0].Length - 1)
-            {
-                
-                if(currentSum < lowest)
+                foreach (var n in allNeighbors)
                 {
-                    lowest = currentSum;
+                    if (shortestDistanceFromOrigin.ContainsKey(n))
+                    {
+                        var newValue = shortestUnvisitedPair.Value + grid[n.Y][n.X];
+
+                        if (shortestDistanceFromOrigin[n] > newValue)
+                        {
+                            shortestDistanceFromOrigin[n] = newValue;
+                        }
+                    }
                 }
 
-                return result;
+                if (shortedUnvisited.Y == row - 1 && shortedUnvisited.X == col - 1)
+                {
+                    break;
+                }
+
+                var item = unvisited.First(x => x.X == shortedUnvisited.X && x.Y == shortedUnvisited.Y);
+                unvisited.Remove(item);
+
+                if (!unvisited.Any()) break;
+
             }
 
-            if (y == grid.Count - 1)
-            {
-                return result += AnotherRecursive(y, x + 1, currentSum);
-            }
-
-            if (x == grid[0].Length - 1)
-            {
-                return result += AnotherRecursive(y + 1, x, currentSum);
-            }
-
-            var rightPath = AnotherRecursive(y, x + 1, currentSum);
-            var downPath = AnotherRecursive(y + 1, x, currentSum);
-
-            result += Math.Min(rightPath, downPath);
-
-            return result;
+            Pos lastPoint = new(row - 1, col - 1);
+            Console.WriteLine($"Part 1 Answer: {shortestDistanceFromOrigin[lastPoint]}");
         }
 
+    }
+
+    internal struct Pos
+    {
+        public int Y { get; }
+
+        public int X { get; }
+
+
+        public Pos(int y, int x)
+        {
+            Y = y;
+            X = x;
+        }
+    }
+
+    internal struct Point
+    {
+        public int ShortestDistance { get; }
+
+        public Pos PreviousPos { get; }
+
+        public Point(int s, Pos p)
+        {
+            ShortestDistance = s;
+            PreviousPos = p;
+        }
     }
 }
