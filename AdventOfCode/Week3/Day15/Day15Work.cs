@@ -11,14 +11,15 @@ namespace AdventOfCode.Week3.Day15
         // Got a hint from reddit to implement Dijkstra's Algorithm
         // https://www.youtube.com/watch?v=pVfj6mxhdMw
 
-        private static List<int[]> grid = new List<int[]>();
+        private static List<int[]> grid = new();
 
         public static async Task Execute()
         {
             string[] input = await File.ReadAllLinesAsync(@"Week3\Day15\Input.txt");
 
             var row = input.Length;
-            var col = input[0].Length;
+
+            int[,] newGrid = new int[row * 5, row * 5];
 
             grid = input.Select(x => x.ToCharArray().Select(y => y - '0').ToArray()).ToList();
 
@@ -27,7 +28,43 @@ namespace AdventOfCode.Week3.Day15
 
             for (int y = 0; y < row; y++)
             {
-                for (int x = 0; x < col; x++)
+                for (int x = 0; x < row; x++)
+                {
+                    var currrentValue = input[y][x] - '0';
+                    newGrid[y, x] = currrentValue;
+
+                    for (int z = row; z < row * 5; z += row)
+                    {
+                        currrentValue++;
+
+                        if (currrentValue > 9) currrentValue = 1;
+
+                        newGrid[y, x + z] = currrentValue;
+                    }
+
+                    
+                }
+
+                for (int x = 0; x < row * 5; x++)
+                {
+                    var currrentValue = newGrid[y, x];
+
+                    newGrid[y, x] = currrentValue;
+
+                    for (int z = row; z < row * 5; z += row)
+                    {
+                        currrentValue++;
+                        if (currrentValue > 9) currrentValue = 1;
+
+                        newGrid[y + z, x] = currrentValue;
+                    }
+                }
+            }
+
+
+            for (int y = 0; y < row * 5; y++)
+            {
+                for (int x = 0; x < row * 5; x++)
                 {
                     Position p = new(y, x);
                     shortestDistanceFromOrigin.Add(p, int.MaxValue);
@@ -40,13 +77,14 @@ namespace AdventOfCode.Week3.Day15
 
             while (true)
             {
-
                 var items =
-                    from sdf in shortestDistanceFromOrigin
+                    (from sdf in shortestDistanceFromOrigin
                     join u in unvisited on sdf.Key equals u
-                    select sdf;
+                    select sdf).ToList();
 
-                var shortestUnvisitedPair = items.OrderBy(x => x.Value).First();
+                // var shortestUnvisitedPair = items.OrderBy(x => x.Value).First();
+
+                var shortestUnvisitedPair = FindShortest(items);
 
                 var shortedUnvisited = shortestUnvisitedPair.Key;
 
@@ -61,7 +99,7 @@ namespace AdventOfCode.Week3.Day15
                 {
                     if (shortestDistanceFromOrigin.ContainsKey(n))
                     {
-                        var newValue = shortestUnvisitedPair.Value + grid[n.Y][n.X];
+                        var newValue = shortestUnvisitedPair.Value + newGrid[n.Y,n.X];
 
                         if (shortestDistanceFromOrigin[n] > newValue)
                         {
@@ -70,7 +108,7 @@ namespace AdventOfCode.Week3.Day15
                     }
                 }
 
-                if (shortedUnvisited.Y == row - 1 && shortedUnvisited.X == col - 1)
+                if (shortedUnvisited.Y == row * 5 - 1 && shortedUnvisited.X == row * 5 - 1)
                 {
                     break;
                 }
@@ -82,8 +120,23 @@ namespace AdventOfCode.Week3.Day15
 
             }
 
-            Position lastPoint = new(row - 1, col - 1);
+            Position lastPoint = new(row * 5 - 1, row * 5 - 1);
             Console.WriteLine($"Part 1 Answer: {shortestDistanceFromOrigin[lastPoint]}");
+        }
+
+        private static KeyValuePair<Position, int> FindShortest(IEnumerable<KeyValuePair<Position, int>> dic)
+        {
+            KeyValuePair<Position, int> result = dic.First();
+
+            foreach (var item in dic)
+            {
+                if (item.Value < result.Value)
+                {
+                    result = item;
+                }
+            }
+
+            return result;
         }
     }
 
