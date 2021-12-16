@@ -41,15 +41,20 @@ namespace AdventOfCode.Week3.Day15
 
             while (true)
             {
-                var watch = new System.Diagnostics.Stopwatch();
-                watch.Start();
+                // var watch = new System.Diagnostics.Stopwatch();
+                // watch.Start();
 
-                var shortestUnvisitedPair = shortestDistanceFromOrigin.Where(x => unvisited.Contains(x.Key)).OrderBy(x => x.Value).First();
+                var items =
+                    from aaa in shortestDistanceFromOrigin
+                    join bbb in unvisited on aaa.Key equals bbb
+                    select aaa;
+
+                var shortestUnvisitedPair = items.OrderBy(x => x.Value).First();
 
                 var shortedUnvisited = shortestUnvisitedPair.Key;
 
-                watch.Stop();
-                Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
+                // watch.Stop();
+                // Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
 
                 Pos n1 = new(shortedUnvisited.Y, shortedUnvisited.X + 1);
                 Pos n2 = new(shortedUnvisited.Y, shortedUnvisited.X - 1);
