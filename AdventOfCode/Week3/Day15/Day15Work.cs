@@ -70,7 +70,7 @@ namespace AdventOfCode.Week3.Day15
                 var shortestUnvisitedPair =
                     (from sdf in shortestDistanceFromOrigin
                      join u in unvisited on sdf.Key equals u
-                     select sdf).First();
+                     select sdf).OrderBy(x => x.Value).First();
 
                 var shortedUnvisited = shortestUnvisitedPair.Key;
 
