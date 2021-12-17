@@ -11,21 +11,14 @@ namespace AdventOfCode.Week3.Day15
         // Got a hint from reddit to implement Dijkstra's Algorithm
         // https://www.youtube.com/watch?v=pVfj6mxhdMw
 
-        private static List<int[]> grid = new();
-
         public static async Task Execute()
         {
             string[] input = await File.ReadAllLinesAsync(@"Week3\Day15\Example.txt");
-
             var row = input.Length;
-
             byte[,] newGrid = new byte[row * 5, row * 5];
-
-            grid = input.Select(x => x.ToCharArray().Select(y => y - '0').ToArray()).ToList();
 
             HashSet<Position> unvisited = new();
             Dictionary<Position, int> shortestDistanceFromOrigin = new();
-
 
             for (int y = 0; y < row; y++)
             {
