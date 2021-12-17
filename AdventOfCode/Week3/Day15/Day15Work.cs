@@ -13,12 +13,11 @@ namespace AdventOfCode.Week3.Day15
 
         public static async Task Execute()
         {
-            string[] input = await File.ReadAllLinesAsync(@"Week3\Day15\Example.txt");
+            string[] input = await File.ReadAllLinesAsync(@"Week3\Day15\Input.txt");
             var row = input.Length;
             var expandedRowCount = row * 5;
             byte[,] newGrid = new byte[expandedRowCount, expandedRowCount];
 
-            HashSet<Position> unvisited = new();
             Dictionary<Position, int> shortestDistanceFromOrigin = new();
 
             for (int y = 0; y < row; y++)
@@ -50,28 +49,16 @@ namespace AdventOfCode.Week3.Day15
             }
 
 
-            for (int y = 0; y < expandedRowCount; y++)
-            {
-                for (int x = 0; x < expandedRowCount; x++)
-                {
-                    Position p = new(y, x);
-                    unvisited.Add(p);
-                }
-            }
-
             var currentPosition = new Position(0, 0);
             shortestDistanceFromOrigin[currentPosition] = 0;
 
+            List<KeyValuePair<Position, int>> existingList = new();
+            existingList.Add(new(currentPosition, 0));
+            existingList.Add(new(new Position(expandedRowCount, expandedRowCount), int.MaxValue));
+
             while (true)
             {
-                var watch = new System.Diagnostics.Stopwatch();
-                watch.Start();
-
-                var shortestUnvisitedPair =
-                    (from sdf in shortestDistanceFromOrigin
-                     join u in unvisited on sdf.Key equals u
-                     select sdf).OrderBy(x => x.Value).First();
-
+                var shortestUnvisitedPair = existingList.First();
                 var shortedUnvisited = shortestUnvisitedPair.Key;
 
                 Position n1 = new(shortedUnvisited.Y, shortedUnvisited.X + 1);
@@ -92,11 +79,14 @@ namespace AdventOfCode.Week3.Day15
                             if (shortestDistanceFromOrigin[n] > newValue)
                             {
                                 shortestDistanceFromOrigin[n] = newValue;
+
+                                AddToSortedList(existingList, new KeyValuePair<Position, int>(n, newValue));
                             }
                         }
                         else
                         {
                             shortestDistanceFromOrigin[n] = newValue;
+                            AddToSortedList(existingList, new KeyValuePair<Position, int>(n, newValue));
                         }
                     }
                 }
@@ -106,20 +96,29 @@ namespace AdventOfCode.Week3.Day15
                     break;
                 }
 
-                var item = unvisited.First(x => x.X == shortedUnvisited.X && x.Y == shortedUnvisited.Y);
-                unvisited.Remove(item);
-
-                if (!unvisited.Any()) break;
-
-                watch.Stop();
-                Console.WriteLine($"Unvisited: {unvisited.Count()} ; Loop time: {watch.ElapsedMilliseconds} ms");
+                existingList.Remove(shortestUnvisitedPair);
             }
 
-            Position lastPoint = new(expandedRowCount - 1, expandedRowCount - 1);
-            Console.WriteLine($"Part 1 Answer: {shortestDistanceFromOrigin[lastPoint]}");
+            Position part1 = new(row - 1, row - 1);
+            Position part2 = new(expandedRowCount - 1, expandedRowCount - 1);
+
+            Console.WriteLine($"Part 1 Answer: {shortestDistanceFromOrigin[part1]}");
+            Console.WriteLine($"Part 2 Answer: {shortestDistanceFromOrigin[part2]}");
         }
 
+
+        private static void AddToSortedList(List<KeyValuePair<Position, int>> existingList, KeyValuePair<Position, int> newItem)
+        {
+            if (existingList.Exists(x => x.Key == newItem.Key))
+            {
+                existingList.Remove(newItem);
+            }
+
+            var index = existingList.IndexOf(existingList.First(x => newItem.Value < x.Value));
+            existingList.Insert(index, newItem);
+        }
     }
+
 
     internal struct Position
     {
@@ -127,11 +126,17 @@ namespace AdventOfCode.Week3.Day15
 
         public int X { get; }
 
-
         public Position(int y, int x)
         {
             Y = y;
             X = x;
         }
+
+        public static bool operator ==(Position lp, Position rp)
+        {
+            return lp.Y == rp.Y && lp.X == rp.X;
+        }
+
+        public static bool operator !=(Position lp, Position rp) => !(lp == rp);
     }
 }
