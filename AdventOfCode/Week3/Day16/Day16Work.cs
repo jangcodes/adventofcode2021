@@ -13,6 +13,23 @@ namespace AdventOfCode.Week3.Day16
         {
             string[] input = await File.ReadAllLinesAsync(@"Week3\Day16\Example.txt");
 
+            var test = Convert.FromHexString(input[0]);
+
+
+            Console.WriteLine(Convert.ToString(test[0], toBase: 2));
+
+            var testBit = (test[0] >> 5);
+
+            Console.WriteLine(Convert.ToString(testBit, toBase: 2));
+
+
+            var anotherTest = test[0] & testBit;
+
+            Console.WriteLine(Convert.ToString(anotherTest, toBase: 2));
+
+
+            Console.WriteLine("");
         }
+
     }
 }

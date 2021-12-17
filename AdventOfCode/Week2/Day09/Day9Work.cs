@@ -8,7 +8,7 @@ namespace AdventOfCode.Day9
 {
     internal class Day9Work
     {
-        private static string[] input;
+        private static string[] input = Array.Empty<string>();
         private static int RowTotal => input.Length;
         private static int ColTotal => input[0].Length;
         private static readonly List<(int x, int y)> usedCoordinates = new();

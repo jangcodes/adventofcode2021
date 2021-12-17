@@ -137,5 +137,15 @@ namespace AdventOfCode.Week3.Day15
         }
 
         public static bool operator !=(Position lp, Position rp) => !(lp == rp);
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Position position && this == position;
+        }
+
+        public override int GetHashCode()
+        {
+            return Tuple.Create(X, Y).GetHashCode();
+        }
     }
 }
