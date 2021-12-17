@@ -19,18 +19,19 @@ namespace AdventOfCode.Week3.Day15
 
             var row = input.Length;
 
-            int[,] newGrid = new int[row * 5, row * 5];
+            byte[,] newGrid = new byte[row * 5, row * 5];
 
             grid = input.Select(x => x.ToCharArray().Select(y => y - '0').ToArray()).ToList();
 
-            List<Position> unvisited = new();
+            HashSet<Position> unvisited = new();
             Dictionary<Position, int> shortestDistanceFromOrigin = new();
+
 
             for (int y = 0; y < row; y++)
             {
                 for (int x = 0; x < row; x++)
                 {
-                    var currrentValue = input[y][x] - '0';
+                    var currrentValue = Convert.ToByte(input[y][x] - '0');
                     newGrid[y, x] = currrentValue;
 
                     for (int z = row; z < row * 5; z += row)
@@ -42,7 +43,7 @@ namespace AdventOfCode.Week3.Day15
                         newGrid[y, x + z] = currrentValue;
                     }
 
-                    
+
                 }
 
                 for (int x = 0; x < row * 5; x++)
@@ -67,7 +68,7 @@ namespace AdventOfCode.Week3.Day15
                 for (int x = 0; x < row * 5; x++)
                 {
                     Position p = new(y, x);
-                    shortestDistanceFromOrigin.Add(p, int.MaxValue);
+                    // shortestDistanceFromOrigin.Add(p, int.MaxValue);
                     unvisited.Add(p);
                 }
             }
@@ -77,14 +78,16 @@ namespace AdventOfCode.Week3.Day15
 
             while (true)
             {
-                var items =
+                var watch = new System.Diagnostics.Stopwatch();
+                watch.Start();
+
+
+                var shortestUnvisitedPair =
                     (from sdf in shortestDistanceFromOrigin
-                    join u in unvisited on sdf.Key equals u
-                    select sdf).ToList();
+                     join u in unvisited on sdf.Key equals u
+                     select sdf).First();
 
-                // var shortestUnvisitedPair = items.OrderBy(x => x.Value).First();
-
-                var shortestUnvisitedPair = FindShortest(items);
+                // var shortestUnvisitedPair = FindShortest(items);
 
                 var shortedUnvisited = shortestUnvisitedPair.Key;
 
@@ -97,11 +100,18 @@ namespace AdventOfCode.Week3.Day15
 
                 foreach (var n in allNeighbors)
                 {
-                    if (shortestDistanceFromOrigin.ContainsKey(n))
+                    if (n.X >= 0 && n.Y >= 0 && n.X < row * 5 && n.Y < row * 5)
                     {
-                        var newValue = shortestUnvisitedPair.Value + newGrid[n.Y,n.X];
+                        var newValue = shortestUnvisitedPair.Value + newGrid[n.Y, n.X];
 
-                        if (shortestDistanceFromOrigin[n] > newValue)
+                        if (shortestDistanceFromOrigin.ContainsKey(n))
+                        {
+                            if (shortestDistanceFromOrigin[n] > newValue)
+                            {
+                                shortestDistanceFromOrigin[n] = newValue;
+                            }
+                        }
+                        else
                         {
                             shortestDistanceFromOrigin[n] = newValue;
                         }
@@ -118,26 +128,14 @@ namespace AdventOfCode.Week3.Day15
 
                 if (!unvisited.Any()) break;
 
+                watch.Stop();
+                Console.WriteLine($"Unvisited: {unvisited.Count()} ; Loop time: {watch.ElapsedMilliseconds} ms");
             }
 
             Position lastPoint = new(row * 5 - 1, row * 5 - 1);
             Console.WriteLine($"Part 1 Answer: {shortestDistanceFromOrigin[lastPoint]}");
         }
 
-        private static KeyValuePair<Position, int> FindShortest(IEnumerable<KeyValuePair<Position, int>> dic)
-        {
-            KeyValuePair<Position, int> result = dic.First();
-
-            foreach (var item in dic)
-            {
-                if (item.Value < result.Value)
-                {
-                    result = item;
-                }
-            }
-
-            return result;
-        }
     }
 
     internal struct Position
