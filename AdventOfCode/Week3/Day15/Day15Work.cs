@@ -61,7 +61,6 @@ namespace AdventOfCode.Week3.Day15
                 for (int x = 0; x < row * 5; x++)
                 {
                     Position p = new(y, x);
-                    // shortestDistanceFromOrigin.Add(p, int.MaxValue);
                     unvisited.Add(p);
                 }
             }
@@ -74,13 +73,10 @@ namespace AdventOfCode.Week3.Day15
                 var watch = new System.Diagnostics.Stopwatch();
                 watch.Start();
 
-
                 var shortestUnvisitedPair =
                     (from sdf in shortestDistanceFromOrigin
                      join u in unvisited on sdf.Key equals u
                      select sdf).First();
-
-                // var shortestUnvisitedPair = FindShortest(items);
 
                 var shortedUnvisited = shortestUnvisitedPair.Key;
 
