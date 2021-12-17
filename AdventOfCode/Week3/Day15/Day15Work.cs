@@ -15,7 +15,8 @@ namespace AdventOfCode.Week3.Day15
         {
             string[] input = await File.ReadAllLinesAsync(@"Week3\Day15\Example.txt");
             var row = input.Length;
-            byte[,] newGrid = new byte[row * 5, row * 5];
+            var expandedRowCount = row * 5;
+            byte[,] newGrid = new byte[expandedRowCount, expandedRowCount];
 
             HashSet<Position> unvisited = new();
             Dictionary<Position, int> shortestDistanceFromOrigin = new();
@@ -27,38 +28,31 @@ namespace AdventOfCode.Week3.Day15
                     var currrentValue = Convert.ToByte(input[y][x] - '0');
                     newGrid[y, x] = currrentValue;
 
-                    for (int z = row; z < row * 5; z += row)
+                    for (int z = row; z < expandedRowCount; z += row)
                     {
                         currrentValue++;
-
                         if (currrentValue > 9) currrentValue = 1;
-
                         newGrid[y, x + z] = currrentValue;
                     }
-
-
                 }
 
-                for (int x = 0; x < row * 5; x++)
+                for (int x = 0; x < expandedRowCount; x++)
                 {
                     var currrentValue = newGrid[y, x];
-
                     newGrid[y, x] = currrentValue;
-
-                    for (int z = row; z < row * 5; z += row)
+                    for (int z = row; z < expandedRowCount; z += row)
                     {
                         currrentValue++;
                         if (currrentValue > 9) currrentValue = 1;
-
                         newGrid[y + z, x] = currrentValue;
                     }
                 }
             }
 
 
-            for (int y = 0; y < row * 5; y++)
+            for (int y = 0; y < expandedRowCount; y++)
             {
-                for (int x = 0; x < row * 5; x++)
+                for (int x = 0; x < expandedRowCount; x++)
                 {
                     Position p = new(y, x);
                     unvisited.Add(p);
@@ -89,7 +83,7 @@ namespace AdventOfCode.Week3.Day15
 
                 foreach (var n in allNeighbors)
                 {
-                    if (n.X >= 0 && n.Y >= 0 && n.X < row * 5 && n.Y < row * 5)
+                    if (n.X >= 0 && n.Y >= 0 && n.X < expandedRowCount && n.Y < expandedRowCount)
                     {
                         var newValue = shortestUnvisitedPair.Value + newGrid[n.Y, n.X];
 
@@ -107,7 +101,7 @@ namespace AdventOfCode.Week3.Day15
                     }
                 }
 
-                if (shortedUnvisited.Y == row * 5 - 1 && shortedUnvisited.X == row * 5 - 1)
+                if (shortedUnvisited.Y == expandedRowCount - 1 && shortedUnvisited.X == expandedRowCount - 1)
                 {
                     break;
                 }
@@ -121,7 +115,7 @@ namespace AdventOfCode.Week3.Day15
                 Console.WriteLine($"Unvisited: {unvisited.Count()} ; Loop time: {watch.ElapsedMilliseconds} ms");
             }
 
-            Position lastPoint = new(row * 5 - 1, row * 5 - 1);
+            Position lastPoint = new(expandedRowCount - 1, expandedRowCount - 1);
             Console.WriteLine($"Part 1 Answer: {shortestDistanceFromOrigin[lastPoint]}");
         }
 
