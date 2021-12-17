@@ -15,7 +15,7 @@ namespace AdventOfCode.Week3.Day15
 
         public static async Task Execute()
         {
-            string[] input = await File.ReadAllLinesAsync(@"Week3\Day15\Input.txt");
+            string[] input = await File.ReadAllLinesAsync(@"Week3\Day15\Example.txt");
 
             var row = input.Length;
 
