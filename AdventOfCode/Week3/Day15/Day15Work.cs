@@ -15,11 +15,11 @@ namespace AdventOfCode.Week3.Day15
 
         public static async Task Execute()
         {
-            string[] input = await File.ReadAllLinesAsync(@"Week3\Day15\Input.txt");
+            string[] input = await File.ReadAllLinesAsync(@"Week3\Day15\Example.txt");
 
             var row = input.Length;
 
-            byte[,] newGrid = new byte[row * 5, row * 5];
+            int[,] newGrid = new int[row * 5, row * 5];
 
             grid = input.Select(x => x.ToCharArray().Select(y => y - '0').ToArray()).ToList();
 
@@ -73,6 +73,9 @@ namespace AdventOfCode.Week3.Day15
                 }
             }
 
+            SortedSet<int> lowestSets = new SortedSet<int>();
+            lowestSets.Add(0);
+
             var currentPosition = new Position(0, 0);
             shortestDistanceFromOrigin[currentPosition] = 0;
 
@@ -82,50 +85,71 @@ namespace AdventOfCode.Week3.Day15
                 watch.Start();
 
 
-                var shortestUnvisitedPair =
-                    (from sdf in shortestDistanceFromOrigin
-                     join u in unvisited on sdf.Key equals u
-                     select sdf).First();
+                //var shortestUnvisitedPair =
+                //    (from sdf in shortestDistanceFromOrigin
+                //     join u in unvisited on sdf.Key equals u
+                //     select sdf).First();
 
-                // var shortestUnvisitedPair = FindShortest(items);
 
-                var shortedUnvisited = shortestUnvisitedPair.Key;
+                var take = lowestSets.First();
 
-                Position n1 = new(shortedUnvisited.Y, shortedUnvisited.X + 1);
-                Position n2 = new(shortedUnvisited.Y, shortedUnvisited.X - 1);
-                Position n3 = new(shortedUnvisited.Y + 1, shortedUnvisited.X);
-                Position n4 = new(shortedUnvisited.Y - 1, shortedUnvisited.X);
+                var shortestUnvisitedPair = shortestDistanceFromOrigin.FirstOrDefault(x => x.Value == 5);
 
-                Position[] allNeighbors = new Position[] { n1, n2, n3, n4 };
 
-                foreach (var n in allNeighbors)
+                if (!shortestUnvisitedPair.Equals(default(KeyValuePair<Position, int>)))
                 {
-                    if (n.X >= 0 && n.Y >= 0 && n.X < row * 5 && n.Y < row * 5)
-                    {
-                        var newValue = shortestUnvisitedPair.Value + newGrid[n.Y, n.X];
 
-                        if (shortestDistanceFromOrigin.ContainsKey(n))
+
+                    // var shortestUnvisitedPair = FindShortest(items);
+
+                    var shortedUnvisited = shortestUnvisitedPair.Key;
+
+                    Position n1 = new(shortedUnvisited.Y, shortedUnvisited.X + 1);
+                    Position n2 = new(shortedUnvisited.Y, shortedUnvisited.X - 1);
+                    Position n3 = new(shortedUnvisited.Y + 1, shortedUnvisited.X);
+                    Position n4 = new(shortedUnvisited.Y - 1, shortedUnvisited.X);
+
+                    Position[] allNeighbors = new Position[] { n1, n2, n3, n4 };
+
+                    foreach (var n in allNeighbors)
+                    {
+                        if (n.X >= 0 && n.Y >= 0 && n.X < row * 5 && n.Y < row * 5)
                         {
-                            if (shortestDistanceFromOrigin[n] > newValue)
+                            var newValue = shortestUnvisitedPair.Value + newGrid[n.Y, n.X];
+
+                            if (shortestDistanceFromOrigin.ContainsKey(n))
+                            {
+                                if (shortestDistanceFromOrigin[n] > newValue)
+                                {
+                                    shortestDistanceFromOrigin[n] = newValue;
+
+                                    lowestSets.Add(newValue);
+                                }
+                            }
+                            else
                             {
                                 shortestDistanceFromOrigin[n] = newValue;
+
+                                lowestSets.Add(newValue);
                             }
                         }
-                        else
-                        {
-                            shortestDistanceFromOrigin[n] = newValue;
-                        }
                     }
+
+                    if (shortedUnvisited.Y == row * 5 - 1 && shortedUnvisited.X == row * 5 - 1)
+                    {
+                        break;
+                    }
+
+
+
+
+                    var item = unvisited.First(x => x.X == shortedUnvisited.X && x.Y == shortedUnvisited.Y);
+                    unvisited.Remove(item);
+
+
                 }
 
-                if (shortedUnvisited.Y == row * 5 - 1 && shortedUnvisited.X == row * 5 - 1)
-                {
-                    break;
-                }
-
-                var item = unvisited.First(x => x.X == shortedUnvisited.X && x.Y == shortedUnvisited.Y);
-                unvisited.Remove(item);
-
+                lowestSets.Remove(lowestSets.First());
                 if (!unvisited.Any()) break;
 
                 watch.Stop();
