@@ -48,7 +48,6 @@ namespace AdventOfCode.Week3.Day15
                 }
             }
 
-
             var currentPosition = new Position(0, 0);
             shortestDistanceFromOrigin[currentPosition] = 0;
 
