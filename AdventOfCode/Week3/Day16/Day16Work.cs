@@ -21,36 +21,43 @@ namespace AdventOfCode.Week3.Day16
 
         private static void ProcessInput(int firstBitPosition, byte[] input)
         {
+            int i = 0;
+
             int bitPosition = firstBitPosition;
-            int workingData = input[0];
+            int workingData = input[i];
             int workingDataLength = 8;
             if (bitPosition > 1)
             {
-                workingData = (workingData << 8) | input[1];
+                i++;
+                workingData = (workingData << 8) | input[i];
                 workingDataLength += 8;
             }
 
             var version = (workingData >> (workingDataLength - bitPosition - 3)) & 7;
             Console.WriteLine($"Version: {version}");
-
             var typeId = (workingData >> (workingDataLength - bitPosition - 6)) & 7;
             Console.WriteLine($"TypeId: {typeId} ");
 
+            bitPosition += 6;
+
             if (typeId == 4)
             {
-                byte result = BitConverter.GetBytes(input[0] & 3).First();
-                HandleLiteral(result, input);
+                var tempBitPosition = (workingDataLength > 8 ? bitPosition - 8 : bitPosition);
+                HandleLiteral(tempBitPosition, input[i..]);
             }
             else
             {
-                var lengthTypeId = (workingData >> 1) & 1;
+
+                var lengthTypeId = (workingData >> (workingDataLength - bitPosition - 1)) & 1;
+                bitPosition++;
                 if (lengthTypeId == 0)
                 {
                     var subPacketLength = workingData & 1;
-                    subPacketLength = (subPacketLength << 8) | input[1];
-                    subPacketLength = (subPacketLength << 6) | (input[2] >> 2);
+                    subPacketLength = (subPacketLength << 8) | input[i];
+                    i++;
+                    subPacketLength = (subPacketLength << 6) | (input[i] >> 2);
 
-                    var leftOverBits = input[2] & ((1 << 2) - 1);
+                    var leftOverBits = input[i] & ((1 << 2) - 1);
                 }
             }
 
@@ -58,14 +65,17 @@ namespace AdventOfCode.Week3.Day16
         }
 
 
-        private static void HandleLiteral(byte leftOver, byte[] input)
+        private static void HandleLiteral(int firstBitPosition, byte[] input)
         {
             int literal = 0;
-            int workingData = leftOver;
-            int workingDataLength = 2;
-            int i = 0;
-            bool moreNumber = true;
 
+            int bitPosition = firstBitPosition;
+            int i = 0;
+
+            int workingData = input[0];
+            int workingDataLength = 8 - bitPosition;
+                        
+            bool moreNumber = true;
             while(moreNumber)
             {
                 if (workingDataLength < 5)
@@ -82,6 +92,8 @@ namespace AdventOfCode.Week3.Day16
                 workingData &= (1 << (workingDataLength - 5)) - 1;
                 workingDataLength -= 5;
             }
+
+            Console.WriteLine(literal);
         }
 
         // Function to extract k bits from p index
