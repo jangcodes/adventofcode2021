@@ -47,13 +47,23 @@ namespace AdventOfCode.Week3.Day16
             }
             else
             {
-
                 var lengthTypeId = (workingData >> (workingDataLength - bitPosition - 1)) & 1;
                 bitPosition++;
                 if (lengthTypeId == 0)
                 {
-                    var subPacketLength = workingData & 1;
-                    subPacketLength = (subPacketLength << 8) | input[i];
+                    int expectedDataLength = 15;
+
+                    var dataLeft = workingDataLength - bitPosition - 1;
+                    var subPacketLength = workingData & ((1 << dataLeft) - 1);
+
+                    expectedDataLength -= workingDataLength;
+
+                    if (expectedDataLength > 8)
+                    {
+                        i++;
+                        subPacketLength = (subPacketLength << 8) | input[i];
+                    }
+                    
                     i++;
                     subPacketLength = (subPacketLength << 6) | (input[i] >> 2);
 
