@@ -53,21 +53,28 @@ namespace AdventOfCode.Week3.Day16
                 {
                     int expectedDataLength = 15;
 
-                    var dataLeft = workingDataLength - bitPosition - 1;
+                    var dataLeft = workingDataLength - bitPosition;
                     var subPacketLength = workingData & ((1 << dataLeft) - 1);
 
-                    expectedDataLength -= workingDataLength;
+                    expectedDataLength -= dataLeft;
 
                     if (expectedDataLength > 8)
                     {
                         i++;
                         subPacketLength = (subPacketLength << 8) | input[i];
+                        expectedDataLength -= 8;
                     }
                     
                     i++;
-                    subPacketLength = (subPacketLength << 6) | (input[i] >> 2);
+                    subPacketLength = (subPacketLength << expectedDataLength) | (input[i] >> 8 - expectedDataLength);
 
-                    var leftOverBits = input[i] & ((1 << 2) - 1);
+
+                    var offset = (subPacketLength - expectedDataLength) / 8;
+
+                    var extra = (subPacketLength - expectedDataLength) % 8;
+
+
+
                 }
             }
 
