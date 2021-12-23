@@ -10,16 +10,21 @@ namespace AdventOfCode.Week3.Day16
 {
     internal class Day16Work
     {
+
+        private static int versionTotal = 0;
+
         public static async Task Execute()
         {
-            string[] input = await File.ReadAllLinesAsync(@"Week3\Day16\Example.txt");
+            string[] input = await File.ReadAllLinesAsync(@"Week3\Day16\Input.txt");
 
-            var inputInBytes = Convert.FromHexString("620080001611562C8802118E34");
+            var inputInBytes = Convert.FromHexString(input[0]);
 
-            ProcessInput(0, inputInBytes, 0, out int _);
+            ProcessInput(0, inputInBytes, 0, out int _, out int _);
+
+            Console.WriteLine($"Version Total: {versionTotal}");
         }
 
-        private static void ProcessInput(int firstBitPosition, byte[] input, int numberOfSubpackets, out int numberOfBytesUsed)
+        private static void ProcessInput(int firstBitPosition, byte[] input, int numberOfSubpackets, out int numberOfBytesUsed, out int lastBitPosition)
         {
             Console.WriteLine("");
 
@@ -41,6 +46,7 @@ namespace AdventOfCode.Week3.Day16
 
                 var version = (workingData >> (workingDataLength - bitPosition - 3)) & 7;
                 Console.WriteLine($"Version: {version}");
+                versionTotal += version;
                 var typeId = (workingData >> (workingDataLength - bitPosition - 6)) & 7;
                 // Console.WriteLine($"TypeId: {typeId} ");
 
@@ -56,7 +62,7 @@ namespace AdventOfCode.Week3.Day16
 
                     if (bitPosition == 0) i++; 
 
-                    // Console.WriteLine($"Literal: {literal}");
+                    Console.WriteLine($"Literal: {literal}");
                 }
                 else
                 {
@@ -70,6 +76,8 @@ namespace AdventOfCode.Week3.Day16
                     var dataLeft = workingDataLength - bitPosition;
                     var subPacketLength = workingData & ((1 << dataLeft) - 1);
 
+                    Console.WriteLine(Convert.ToString(subPacketLength, toBase: 2));
+
                     expectedDataLength -= dataLeft;
 
                     if (expectedDataLength > 8)
@@ -77,33 +85,48 @@ namespace AdventOfCode.Week3.Day16
                         i++;
                         subPacketLength = (subPacketLength << 8) | input[i];
                         expectedDataLength -= 8;
+
+                        Console.WriteLine(Convert.ToString(subPacketLength, toBase: 2));
                     }
 
                     i++;
                     subPacketLength = (subPacketLength << expectedDataLength) | (input[i] >> 8 - expectedDataLength);
 
-                    bitPosition = expectedDataLength;
+                    Console.WriteLine(Convert.ToString(subPacketLength, toBase: 2));
+
+                    bitPosition = expectedDataLength % 8;
+
+                    if (bitPosition == 0)
+                    {
+                        i++;
+                        expectedDataLength = 0;
+                    }
 
                     if (lengthTypeId == 0)
                     {
-                        // Console.WriteLine($"SubPacket Length: {subPacketLength}");
+                        Console.WriteLine($"SubPacket Length: {subPacketLength}");
 
                         var numberOfBytes = (subPacketLength - (8 - expectedDataLength)) / 8;
                         var extra = (subPacketLength - (8 - expectedDataLength)) % 8;
 
                         if (extra > 0) numberOfBytes++;
 
-                        ProcessInput(bitPosition, input[i..(i + numberOfBytes + 1)], 0, out int _);
+                        ProcessInput(bitPosition, input[i..(i + numberOfBytes + 1)], 0, out int _, out int lastBit);
 
-                        i += (i + numberOfBytes);
+                        i += numberOfBytes;
+                        bitPosition = lastBit;
                     }
                     else if (lengthTypeId == 1)
                     {
-                        // Console.WriteLine($"SubPacket Amount: {subPacketLength}");
+                        Console.WriteLine($"SubPacket Amount: {subPacketLength}");
 
-                        ProcessInput(bitPosition, input[i..], subPacketLength, out int bytesUsed);
+                        for (int c = 0; c< subPacketLength; c++)
+                        {
+                            ProcessInput(bitPosition, input[i..], 1, out int bytesUsed, out int lastBit);
+                            i += bytesUsed;
 
-                        i += bytesUsed;
+                            bitPosition = lastBit % 8;
+                        }
 
                     }
                 }
@@ -119,6 +142,8 @@ namespace AdventOfCode.Week3.Day16
             }
 
             numberOfBytesUsed = i;
+
+            lastBitPosition = bitPosition;
         }
 
 
