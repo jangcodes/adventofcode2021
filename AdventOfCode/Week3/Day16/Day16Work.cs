@@ -19,17 +19,20 @@ namespace AdventOfCode.Week3.Day16
 
             var inputInBytes = Convert.FromHexString(input[0]);
 
-            ProcessInput(0, inputInBytes, 0, out int _, out int _);
+            var result = ProcessInput(0, inputInBytes, 0, out int _, out int _);
 
-            Console.WriteLine($"Version Total: {versionTotal}");
+            Console.WriteLine($"Part 1 Answer: {versionTotal}");
+            Console.WriteLine($"Part 2 Answer: {result.Last()}");
         }
 
-        private static void ProcessInput(int firstBitPosition, byte[] input, int numberOfSubpackets, out int numberOfBytesUsed, out int lastBitPosition)
+        private static List<long> ProcessInput(int firstBitPosition, byte[] input, int numberOfSubpackets, out int numberOfBytesUsed, out int lastBitPosition)
         {
             int i = 0;
             int inputTotalLength = input.Length;
             int bitPosition = firstBitPosition;
             int subPacketCount = 0;
+
+            List<long> literalList = new();
 
             while (i < inputTotalLength - 1)
             {
@@ -52,6 +55,8 @@ namespace AdventOfCode.Week3.Day16
                 {
                     var tempBitPosition = (workingDataLength > 8 ? bitPosition - 8 : bitPosition);
                     var literal = HandleLiteral(tempBitPosition, input[i..], out int inputIndex, out int numberOfLiteralFound);
+
+                    literalList.Add(literal);
 
                     i += inputIndex;
                     bitPosition = (bitPosition + (numberOfLiteralFound * 5)) % 8;
@@ -91,6 +96,8 @@ namespace AdventOfCode.Week3.Day16
                         expectedDataLength = 0;
                     }
 
+                    List<long> computeList = new List<long>();
+
                     if (lengthTypeId == 0)
                     {
                         var numberOfBytes = (subPacketLength - (8 - expectedDataLength)) / 8;
@@ -98,7 +105,8 @@ namespace AdventOfCode.Week3.Day16
 
                         if (extra > 0) numberOfBytes++;
 
-                        ProcessInput(bitPosition, input[i..(i + numberOfBytes + 1)], 0, out int _, out int lastBit);
+                        var inputResult = ProcessInput(bitPosition, input[i..(i + numberOfBytes + 1)], 0, out int _, out int lastBit);
+                        computeList.AddRange(inputResult);
 
                         if (extra == 0) i++;
 
@@ -109,12 +117,16 @@ namespace AdventOfCode.Week3.Day16
                     {
                         for (int c = 0; c < subPacketLength; c++)
                         {
-                            ProcessInput(bitPosition, input[i..], 1, out int bytesUsed, out int lastBit);
+                            var inputResult = ProcessInput(bitPosition, input[i..], 1, out int bytesUsed, out int lastBit);
+                            computeList.AddRange(inputResult);
+
                             i += bytesUsed;
 
                             bitPosition = lastBit % 8;
                         }
                     }
+
+                    literalList.Add(Compute(computeList, typeId));
                 }
 
                 subPacketCount++;
@@ -128,6 +140,23 @@ namespace AdventOfCode.Week3.Day16
             numberOfBytesUsed = i;
 
             lastBitPosition = bitPosition;
+
+            return literalList;
+        }
+
+        private static long Compute(List<long> values, int type)
+        {
+            return type switch
+            {
+                0 => values.Sum(),
+                1 => values.Aggregate((a, x) => a * x),
+                2 => values.Min(),
+                3 => values.Max(),
+                5 => values[0] > values[1] ? 1 : 0,
+                6 => values[0] < values[1] ? 1 : 0,
+                7 => values[0] == values[1] ? 1 : 0,
+                _ => 0,
+            };
         }
 
 
@@ -167,10 +196,6 @@ namespace AdventOfCode.Week3.Day16
 
             return literal;
         }
-
-        // Function to extract k bits from p index
-        // and returns the extracted value as integer
-        public static int BitExtracted(byte number, int numberOfBits, int index) => ((1 << numberOfBits) - 1) & (number >> index);
 
         private static bool GetNumber(int fiveBits, out long output)
         {
