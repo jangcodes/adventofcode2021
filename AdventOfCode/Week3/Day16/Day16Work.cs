@@ -107,6 +107,9 @@ namespace AdventOfCode.Week3.Day16
                         Console.WriteLine($"{subPacketLength} start");
                         ProcessInput(bitPosition, input[i..(i + numberOfBytes + 1)], 0, out int _, out int lastBit);
                         Console.WriteLine($"{subPacketLength} end");
+
+                        if (extra == 0) i++;
+
                         i += numberOfBytes;
                         bitPosition = lastBit;
                     }
