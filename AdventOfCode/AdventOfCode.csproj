@@ -33,6 +33,8 @@
     <None Remove="Week3\Day15\Input.txt" />
     <None Remove="Week3\Day16\Example.txt" />
     <None Remove="Week3\Day16\Input.txt" />
+    <None Remove="Week3\Day17\Example.txt" />
+    <None Remove="Week3\Day17\Input.txt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -121,6 +123,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Week3\Day16\Input.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Week3\Day17\Example.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Week3\Day17\Input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
