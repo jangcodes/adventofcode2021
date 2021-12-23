@@ -26,8 +26,6 @@ namespace AdventOfCode.Week3.Day16
 
         private static void ProcessInput(int firstBitPosition, byte[] input, int numberOfSubpackets, out int numberOfBytesUsed, out int lastBitPosition)
         {
-            Console.WriteLine("");
-
             int i = 0;
             int inputTotalLength = input.Length;
             int bitPosition = firstBitPosition;
@@ -45,10 +43,8 @@ namespace AdventOfCode.Week3.Day16
                 }
 
                 var version = (workingData >> (workingDataLength - bitPosition - 3)) & 7;
-                // Console.WriteLine($"Version: {version}");
                 versionTotal += version;
                 var typeId = (workingData >> (workingDataLength - bitPosition - 6)) & 7;
-                // Console.WriteLine($"TypeId: {typeId} ");
 
                 bitPosition += 6;
 
@@ -61,8 +57,6 @@ namespace AdventOfCode.Week3.Day16
                     bitPosition = (bitPosition + (numberOfLiteralFound * 5)) % 8;
 
                     if (bitPosition == 0) i++; 
-
-                    Console.WriteLine($"Literal: {literal}");
                 }
                 else
                 {
@@ -104,9 +98,7 @@ namespace AdventOfCode.Week3.Day16
 
                         if (extra > 0) numberOfBytes++;
 
-                        Console.WriteLine($"{subPacketLength} start");
                         ProcessInput(bitPosition, input[i..(i + numberOfBytes + 1)], 0, out int _, out int lastBit);
-                        Console.WriteLine($"{subPacketLength} end");
 
                         if (extra == 0) i++;
 
@@ -115,8 +107,6 @@ namespace AdventOfCode.Week3.Day16
                     }
                     else if (lengthTypeId == 1)
                     {
-                        Console.WriteLine($"SubPacket Amount: {subPacketLength} starts");
-
                         for (int c = 0; c< subPacketLength; c++)
                         {
                             ProcessInput(bitPosition, input[i..], 1, out int bytesUsed, out int lastBit);
@@ -124,9 +114,6 @@ namespace AdventOfCode.Week3.Day16
 
                             bitPosition = lastBit % 8;
                         }
-
-                        Console.WriteLine($"SubPacket Amount: {subPacketLength} ends");
-
                     }
                 }
 
@@ -136,8 +123,6 @@ namespace AdventOfCode.Week3.Day16
                 {
                     break;
                 }
-
-                Console.WriteLine("");
             }
 
             numberOfBytesUsed = i;
