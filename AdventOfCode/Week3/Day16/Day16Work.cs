@@ -56,7 +56,7 @@ namespace AdventOfCode.Week3.Day16
                     i += inputIndex;
                     bitPosition = (bitPosition + (numberOfLiteralFound * 5)) % 8;
 
-                    if (bitPosition == 0) i++; 
+                    if (bitPosition == 0) i++;
                 }
                 else
                 {
@@ -107,7 +107,7 @@ namespace AdventOfCode.Week3.Day16
                     }
                     else if (lengthTypeId == 1)
                     {
-                        for (int c = 0; c< subPacketLength; c++)
+                        for (int c = 0; c < subPacketLength; c++)
                         {
                             ProcessInput(bitPosition, input[i..], 1, out int bytesUsed, out int lastBit);
                             i += bytesUsed;
