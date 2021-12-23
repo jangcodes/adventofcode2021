@@ -110,9 +110,9 @@ namespace AdventOfCode.Week3.Day16
 
             int workingData = input[0];
             int workingDataLength = 8 - bitPosition;
-                        
+
             bool moreNumber = true;
-            while(moreNumber)
+            while (moreNumber)
             {
                 if (workingDataLength < 5)
                 {
@@ -128,7 +128,7 @@ namespace AdventOfCode.Week3.Day16
                 workingData &= (1 << (workingDataLength - 5)) - 1;
                 workingDataLength -= 5;
 
-                numberOfLiteralFound ++;
+                numberOfLiteralFound++;
             }
 
             inputIndex = i;
