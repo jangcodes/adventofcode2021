@@ -8,24 +8,25 @@ using System.Threading.Tasks;
 
 namespace AdventOfCode.Week3.Day16
 {
-    class Day16Work
+    internal class Day16Work
     {
         public static async Task Execute()
         {
             string[] input = await File.ReadAllLinesAsync(@"Week3\Day16\Example.txt");
 
-            var inputInBytes = Convert.FromHexString("38006F45291200");
+            var inputInBytes = Convert.FromHexString("620080001611562C8802118E34");
 
-            ProcessInput(0, inputInBytes);
+            ProcessInput(0, inputInBytes, 0, out int _);
         }
 
-        private static void ProcessInput(int firstBitPosition, byte[] input)
+        private static void ProcessInput(int firstBitPosition, byte[] input, int numberOfSubpackets, out int numberOfBytesUsed)
         {
             Console.WriteLine("");
 
             int i = 0;
             int inputTotalLength = input.Length;
             int bitPosition = firstBitPosition;
+            int subPacketCount = 0;
 
             while (i < inputTotalLength - 1)
             {
@@ -41,7 +42,7 @@ namespace AdventOfCode.Week3.Day16
                 var version = (workingData >> (workingDataLength - bitPosition - 3)) & 7;
                 Console.WriteLine($"Version: {version}");
                 var typeId = (workingData >> (workingDataLength - bitPosition - 6)) & 7;
-                Console.WriteLine($"TypeId: {typeId} ");
+                // Console.WriteLine($"TypeId: {typeId} ");
 
                 bitPosition += 6;
 
@@ -51,51 +52,73 @@ namespace AdventOfCode.Week3.Day16
                     var literal = HandleLiteral(tempBitPosition, input[i..], out int inputIndex, out int numberOfLiteralFound);
 
                     i += inputIndex;
-
                     bitPosition = (bitPosition + (numberOfLiteralFound * 5)) % 8;
 
-                    Console.WriteLine($"Literal: {literal}");
+                    if (bitPosition == 0) i++; 
+
+                    // Console.WriteLine($"Literal: {literal}");
                 }
                 else
                 {
                     var lengthTypeId = (workingData >> (workingDataLength - bitPosition - 1)) & 1;
                     bitPosition++;
+
+                    int expectedDataLength = 15;
+                    if (lengthTypeId == 0) expectedDataLength = 15;
+                    else if (lengthTypeId == 1) expectedDataLength = 11;
+
+                    var dataLeft = workingDataLength - bitPosition;
+                    var subPacketLength = workingData & ((1 << dataLeft) - 1);
+
+                    expectedDataLength -= dataLeft;
+
+                    if (expectedDataLength > 8)
+                    {
+                        i++;
+                        subPacketLength = (subPacketLength << 8) | input[i];
+                        expectedDataLength -= 8;
+                    }
+
+                    i++;
+                    subPacketLength = (subPacketLength << expectedDataLength) | (input[i] >> 8 - expectedDataLength);
+
+                    bitPosition = expectedDataLength;
+
                     if (lengthTypeId == 0)
                     {
-                        int expectedDataLength = 15;
-
-                        var dataLeft = workingDataLength - bitPosition;
-                        var subPacketLength = workingData & ((1 << dataLeft) - 1);
-
-                        expectedDataLength -= dataLeft;
-
-                        if (expectedDataLength > 8)
-                        {
-                            i++;
-                            subPacketLength = (subPacketLength << 8) | input[i];
-                            expectedDataLength -= 8;
-                        }
-
-                        i++;
-                        subPacketLength = (subPacketLength << expectedDataLength) | (input[i] >> 8 - expectedDataLength);
-
-                        Console.WriteLine($"SubPacket Length: {subPacketLength}");
+                        // Console.WriteLine($"SubPacket Length: {subPacketLength}");
 
                         var numberOfBytes = (subPacketLength - (8 - expectedDataLength)) / 8;
                         var extra = (subPacketLength - (8 - expectedDataLength)) % 8;
 
                         if (extra > 0) numberOfBytes++;
 
-                        bitPosition = expectedDataLength;
-
-                        ProcessInput(bitPosition, input[i..(i + numberOfBytes + 1)]);
+                        ProcessInput(bitPosition, input[i..(i + numberOfBytes + 1)], 0, out int _);
 
                         i += (i + numberOfBytes);
                     }
+                    else if (lengthTypeId == 1)
+                    {
+                        // Console.WriteLine($"SubPacket Amount: {subPacketLength}");
+
+                        ProcessInput(bitPosition, input[i..], subPacketLength, out int bytesUsed);
+
+                        i += bytesUsed;
+
+                    }
+                }
+
+                subPacketCount++;
+
+                if (numberOfSubpackets > 0 && subPacketCount == numberOfSubpackets)
+                {
+                    break;
                 }
 
                 Console.WriteLine("");
             }
+
+            numberOfBytesUsed = i;
         }
 
 
