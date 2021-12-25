@@ -1,4 +1,4 @@
-﻿using AdventOfCode.Week3.Day18;
+﻿using AdventOfCode.Week3.Day19;
 using System;
 using System.Threading.Tasks;
 
@@ -11,7 +11,7 @@ namespace AdventOfCode
             var watch = new System.Diagnostics.Stopwatch();
             watch.Start();
 
-            await Day18Work.Execute();
+            await Day19Work.Execute();
 
             watch.Stop();
             Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
