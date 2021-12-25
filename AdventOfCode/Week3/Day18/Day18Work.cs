@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -18,14 +16,25 @@ namespace AdventOfCode.Week3.Day18
             string[] input = await File.ReadAllLinesAsync(@"Week3\Day18\Input.txt");
 
             var snailNumber = input[0];
-
             for (int i = 1; i < input.Length; i++) snailNumber = ComputeSnailNumbers($"[{snailNumber},{input[i]}]");
 
-            Console.WriteLine(snailNumber);
+            Console.WriteLine($"Part 1 Answer: {MagCalculator(snailNumber)}");
 
-            var part1Answer = MagCalculator(snailNumber);
+            long largestMag = 0;
+            for (int i = 0; i < input.Length; i++)
+            {
+                for (int j = 0; j < input.Length; j++)
+                {
+                    if (i != j)
+                    {
+                        var result = ComputeSnailNumbers($"[{input[i]},{input[j]}]");
+                        var magResult = MagCalculator(result);
+                        if (magResult > largestMag) largestMag = magResult;
+                    }
+                }
+            }
 
-            Console.WriteLine($"Part 1 Answer: {part1Answer}");
+            Console.WriteLine($"Part 2 Answer: {largestMag}");
         }
 
         private static string ComputeSnailNumbers(string beforeCompute)
@@ -116,23 +125,14 @@ namespace AdventOfCode.Week3.Day18
         private static long MagCalculator(string snailNumber)
         {
             string currentSnailNumber = snailNumber;
+            var matchedPair = Regex.Match(currentSnailNumber, PairRegexPattern);
 
-            while (true)
+            while (matchedPair.Success)
             {
-                var matchedPair = Regex.Match(currentSnailNumber, PairRegexPattern);
-                if (matchedPair.Success)
-                {
-                    var (left, right) = GetNumberFromPair(matchedPair.Value);
-
-                    var mag = (left * 3) + (right * 2);
-
-                    currentSnailNumber = currentSnailNumber.Remove(matchedPair.Index, matchedPair.Length);
-                    currentSnailNumber = currentSnailNumber.Insert(matchedPair.Index, mag.ToString());
-                }
-                else
-                {
-                    break;
-                }
+                var (left, right) = GetNumberFromPair(matchedPair.Value);
+                var mag = (left * 3) + (right * 2);
+                currentSnailNumber = currentSnailNumber.Remove(matchedPair.Index, matchedPair.Length).Insert(matchedPair.Index, mag.ToString());
+                matchedPair = Regex.Match(currentSnailNumber, PairRegexPattern);
             }
 
             return Convert.ToInt64(currentSnailNumber);
